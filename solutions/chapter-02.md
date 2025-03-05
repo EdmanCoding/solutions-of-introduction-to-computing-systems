@@ -69,7 +69,7 @@
 ---
 13. Without changing their values, convert the following 2’s complement binary numbers into eight-bit 2’s complement numbers.
 	1. 1010
-		1. 0000 0101
+		1. 1111 1010
 	2. 011001
 		1. 0001 1001
 	3. 1111111000
