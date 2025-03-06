@@ -108,7 +108,7 @@
 ---
 18. Add the following unsigned binary numbers. Also, express the answer in decimal.
 	1. 01 + 1011 = 1100 = 12
-	2. 11 + 01010101 = 0101 1000
+	2. 11 + 01010101 = 0101 1000 = 88
 	3. 0101 + 110 = 1011 = 11
 	4. 01+10 = 11 = 3
 ---
