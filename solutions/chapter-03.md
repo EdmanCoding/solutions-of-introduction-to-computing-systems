@@ -125,16 +125,9 @@
 ---
 27. 14 bit address can store 2^14 byte. If the nibble takes half the space of the byte, this memory can store 2^14 * 2 = 2^15 nibbles.
 ---
-28. [falstad link | Live Circuit](https://www.falstad.com/circuit/circuitjs.html?ctz=CQAgjCAMB0l3BWcMBMcUHYMGZIA4UA2ATmIxAUgoqoQFMBaMMAKDDwBYQPCvsEUFQlX6CqrAO7deIbJ25hCs+ZBZSefAcs1iWAGW2yt2QniNioIAGYBDADYBnOtVUGOiwybNyuVKrcdnJFcFJQQOPlMKCMt-eycXfUMEMEEvClTY63igqDVpLhS0+SK89RlwrncwmNV2KorMhGEMi0khES0MNG4OM1UpZtpM7qo+vxYAWRA8PDG+kGJMiP6QFGgENnlR3rMMeRXLdrwPQ9n5-vyBM0Pq3bKKFDNhG48Xh7v3u8OQ74X0n6WAIJYJJfaFGLgkCEFC+IE5RJAA)
+28. [falstad link | Live Circuit](https://www.falstad.com/circuit/circuitjs.html?ctz=CQAgjCAMB0l3BWc0FwCwCY0HYEA4cEMElURTJyBTAWjDACgwy9KxsA2EVkAZg0qVe5ckzLsuE8Jz4CofeQjGUM2DNK6r1-QQspLmQjng19js3cP0MAMuTRoQATi4dIJl-MoAzAIYAbAGcqEUhbe0ceNxMeXT8gkKQwgHcI5y5eAnSoBlTMx0988DB1FL4szww8Dy4yqpqQeuLS3Mbq7LAndU8yzu7JLuac1L7szx7W8a5PehbUhAduIxjBVt5zHnWTWeGzFca1Jd2tI5OdusOeKVjW67YZc9uZHhfV1Nejx7sORx+QP90EHiwVC4TAbn+jnBujYIGBiRydmIrkcyK84DhARBSXCvCIkL4+MBmISoLy+L+ePUj1SaL+aJp4Ahf2hQzKfw5UJKOQAkp9uVcZIIUKI+TNuTMhVARUo+VIdvKpTBSAw+U0duqlTK1vidlTTGUtkMjVJDVk9eaIRdqdyzkLWgzbQhJPaRoMFe7XUy2NzWabWizuSyvUVWaH7cxqVU+OtwNG0Px5OoVZGLDGMnIE6VGooxOoMFgQGh6YXnbpk6J3kI5Hq5L1uTpjbHejJG2BFo3eh2ax3mw7Do3eJBHJ21sO00OR328uZB7HR3l53JePPp2ms400JQN3Ut0XE1htwDbvGD+593NGueNwITMXHGEALKNUsQgu-QsqFAMAAe-2Y9j-LwEAINgRabiAADKv7kFwNCZCAhzwUgqKOAAgjBzAQPBYHgmB8GOKhIAAEIwVg+G8GBGB-AR4GFgAwjBvBoEgOFmOotFEQAIgwABG5CQE44B4FweAAWgYk5JgwgILae5iVRvBCWE0nkA244KXw44qRgMkNhs7BmGBOl6eoG6aTuDCqbJZkvIZODKVZun-M64CDBw+BFjcf6gSYBb6E4qLOUR0F-tgYB+RgEC4JohZEQA8gArgALjBzrCKoJhuEJVQQERADakAAFyQAAumlHDCMxlDZXwCZ0Y4hVFWA5U+R5Rbjhw9AdWBBVgCVrWwShlX-nlHBcH1zWDWofnYEJ2CLFUZkQRhYUYEJzGOAtSDMb1EGkWtvXngthHdURjFrXefzbUWHB7YWPFAA)
 	1. Solution:
-	![Solution](_attachments/Pasted%20image%2020241106171556.png)
-	2. Solution:
-	| S0 | S1 | OUT |
-	   | -  | -  | -  |
-	   | 0  | 0  | LEFT TOP I0 |
-	   | 1  | 0  | LEFT TOP OR BOTTOM I1 |
-	   | 0  | 1  | LEFT BOTTOM I0 |
-	   | 1  | 1  | LEFT BOTTOM I1 |
+	![Solution](_attachments/3.28%204-to-1%20multiplexer.png)
 ---
 29. [falstad link | Live Circuit](https://www.falstad.com/circuit/circuitjs.html?ctz=CQAgjCAMB0l3BWcMBMcUHYMGZIA4UA2ATmIxAUgoqoQFMBaMMAKAHcQ8qAWbvT2in6R2AikLGEU3KCzAIIXEN2woQmNSrVU1SBHIRqlhbjoxqTVHVAqiNIS+vMUMhWfKrZsbhIR58KPxtdWw57LSddXlkw5wj7bDwZEVi1RJlfTyT3BGxAnjgHOMLrWlFefkz86pTq7jAfIKraqtagv2FRKo6ii3wY3uVCwmcFbQMqEd0JPFVxYXUbfQ4ph37VhGiRAFlOOcN+PBN54Oh9AElIlzcvH1cbGD1RW4po+03klgAZSV9wN0IfysIAAZgBDAA2AGc6NQRD8lAd-idgeDobCkPCxPU3A1lHjUZCYXCWEA)
 	1. Solution:
@@ -153,7 +146,8 @@
 ---
 30. Solution:
 	1. It is selector of a *mux*. If x = 0, operands of adding operation will be A + B; if x = 1, operands of adding operation will be A + C.
-	2. Can't solve.
+	2. [falstad link | Live Circuit](https://www.falstad.com/circuit/circuitjs.html?ctz=CQAgjCAMB0l3BWcMBMcUHYMGZIA4UA2ATmIxAUgoqoQFMBaMMAKDDwBYQPsVu9uHAUPAoUeARFZhihENmxzxA7Aj7LwCsFyltZ4QlQ1gMSiZuzbw4PXLBmV682C06bMuUw5cNTcSGNXa1YAdwpTAI4qRQEUKKgWMJjI6MJYhDlIFgBZeTT5NTzhe2Cc8GI+VT4ZPg4SvhhWXJEq-m56m1ymMErC7tqOxsTuXgLa0eSssJ5K-N5UgSn5NCLlo3il+ZTy9Q3hmu2DlAyEsOO5VvPVpavk+wXTgwf77aWXuKoRD8ev+K+Tt49MbgIGTfag-IPJZQ17DdZUfqwsKI74ogFsTgBOJtb4iHrGdyYkotWqSMTOQlcJgVNpMCJ48mSGwAGW4hCpeE+7JAXh81gAZgBDAA2AGc6NQsqyrgxOQETryAlAQEKxRKkFLaXKRIqGiqReLJSxWUxDDy5aaEdo+VRVYaNSwAJLcfQMbkcfQlKgwJAIJ0BcxunzOTJQaC+-0W7lyr1hiPOvwCIM8nqSUM+ijDS3mq1mr1Zl6yq3+IuPRM5lMl7lLHXatM-JNyi1ypbNqhRrg3BVy3wt4a9oyB6v97tGE756bc0scbkTtkcz6uvvTJeLzzD1kIGmpkBpMmLAUG9WPDLt2g05cUC-n6r+JZb28qIl34bYZ9PriXt+f6KFL-v8AIh3N4gP8Ew5EvcCQBjbxoO9fZQKTEpgONHkxCpKd0JTWC9TtY9NVNHkpxKXVDzVI1WQOZMqOtJUIDwijuDgIiuCiK0cOVBiHWRL58B5f5MnBaogKBK43hpajtwicThKUcdpJHOwIiuMThjYlimKoKCa2YqCZkAwTplGPTRlU5FkJLYyX2RKyk1GS8GHshFo3g8z1ypZCFLcgyQVksteKTPEvLQ7FkwYLDtKzCKIgYILDJTPMgWzNBFgLM0UorDKllLDKcvRaZJCBAKGwCPiez41sjDKsd4quZh1GxerHgi0TsTM+dfI6rK1O5DL1O66ZmL6ob0QADzQhQUwINCTBTDBiG4SIQAAQRYcaOAQJA6WEDAIDpJAfC4AAhNaQAwFYXCQHA7DfRbsQADVOuJPBMBaiD4Ok5EOkATvWq1poVV67uO07TXIJhpqYBA9qB77frQrb2A+ha6QW77VvGpG5oWmQkPpJaMfkYgrXmpiXvx7FVrCB9RAEGnvnvGlvgQZS9iAA)
+    ![Solution](_attachments/3.30%20adder-subtracter.png)
 ---
 31. Solution:
 	1. 2 propagation delay due to some inputs propogate through 2 gates.
@@ -176,25 +170,9 @@
 	2. 11 = 3
 	3. 3 (11) x 3 (11) = 9
 	4. 4 bit requires for representing 9 in binary (1001).
-	5. | A\[1] | A\[0] | B\[1] | B\[0] | Y |
-	    |   0  |   0  |   0  |   0  | 0 |
-	    |   1  |   0  |   0  |   0  | 0 |
-	    |   0  |   1  |   0  |   0  | 0 |
-	    |   0  |   0  |   1  |   0  | 0 |
-	    |   0  |   0  |   0  |   1  | 0 |
-	    |   1  |   1  |   0  |   0  | 0 |
-	    |   0  |   1  |   1  |   0  | 2 |
-	    |   0  |   0  |   1  |   1  | 0 |
-	    |   1  |   0  |   1  |   0  | 4 |
-	    |   0  |   1  |   0  |   1  | 1 |
-	    |   1  |   0  |   0  |   1  | 2 |
-	    |   1  |   1  |   1  |   0  | 6 |
-	    |   0  |   1  |   1  |   1  | 3 |
-	    |   1  |   1  |   0  |   1  | 3 |
-	    |   1  |   0  |   1  |   1  | 6 |
-	    |   1  |   1  |   1  |   1  | 9 |
-	6. [falstad link | Live Circuit](https://www.falstad.com/circuit/circuitjs.html?ctz=CQAgjCAMB0l3BWcMBMcUHYMGZIA4UA2ATmIxAUgoqoQFMBaMMAKAA8QmQUAWPEHhBQIIPbmICCAbTABddpxTc8VHlRR5sA8SGmR5HBkrX81A5tt4gAQlP0Ku2DIXMgnxS2NtyWAWRCEGMaEYkGqIVDc0AgsYJRukGLCLmrqCC7q1DFxVLhi2HhiqW6FkUpIMQCS4upBCUl1VDAVLNW8uYT8eW6dkc0UsfE82EojtM5uaGVZLADuAnDc6QIjSxlzK0rJm-VQG8UFRauHe-PDo73nbtjr893tNY+QG93FD8XP82Aajw8Pz3FyhMeBFAsExJkWndEhQfg8ED9PrtCMsHij1m0zDxiC5Xji+tEBpiqJ0ujDSQSWjldiJjItadNaINcuS6sUwYyBmdjpdjqUkWBgfj3vikX86mAeA0lAK4WZvqZRRsFQJ8YKUkqvlLuBLtQj+AK9XLaIjlYQOvwHjcDWaLeBzQFlgKHejHq6xVjFuqFk1lcCvRMKQLA3hLWYg8ydghiECXNGZdxIjEzvTvlG00irgysxNM6tzaZ8419kW6STi-MEBMxhRgXxTrW4zHGwIVHsADLgY0BJJmKgQABmAEMADYAZzo1Gencl0p7OoTVGH48nSGn9rtEWtfRAy4nU5YM-9JKKi37u9H+7XLCAA)
-	   ![Solution](_attachments/Pasted%20image%2020241116001323.png)
+	5. ![Solution](_attachments/3.34%20Y%5B2%5D%20table.png)
+	6. [falstad link | Live Circuit](https://www.falstad.com/circuit/circuitjs.html?ctz=CQAgjCAMB0l3BWcMBMcUHYMGZIA4UA2ATmIxAUgpABZsKBTAWjDACgwEI8xDbeQPPgho0oIFNQQdKIQgj40B84aPGSk0gDJyaVJX0J6Q2BJMkQAZgEMANgGcG1SGx2EMkg3I8mzE8CA2Dk5ILjp4cPx8EVSm5uJBjs6ugtieAnhpvvFUiSFQMlQ4qmLFcnh46lJsALIgZYQV9dh8HlTm0NIAHhSkJmCSRhDYnLQSYgCCANpgALpsPYSEkiOSGJBiI0hiKGIAQjPzPRhG-ZIRfFtjuyDTkEeCYOQj9HgIxP2K4yAH9wv1YEqJwgJyKpx2YgAmlM-gB3OQKChqNpIsQueFCVH1PwiNFsIA)
+	   ![Solution](_attachments/3.34%20Y%5B2%5D%20multiplier.png)
 ---
 35. Old value can't be recovered when overwrite on it.
 ---
@@ -267,9 +245,13 @@
 	1. 3 bit decrementor.
     2. Solution:
 ![Solution](_attachments/Pasted%20image%2020241120172251.png)
+[falstad link | Live Circuit](https://www.falstad.com/circuit/circuitjs.html?ctz=CQAgjCAMB0l3BWcMBMcUHYMGZIA4UA2ATmIxAUgpABZsKBTAWjDACgwEk09xCrMKPlSoI2AGWEhB4MEJlCqAMwCGAGwDODapDYB3KTLD9wxRfqlgz0-KfMBJaXl6t5KGrMVRoSMZyTYhC4mdELGIhQcXBQowaLW4VCRALIg2GjSGELpVNiB0tI+bKk0xISZQqXleeXyRamECLVZII3V+XViBrgeiTlSut0ZfcNyUBb9rk4uY4PS7p42M+YGPItriXOT1v0yW8Mm2ytpwztBduOONDTLaedTIj6Rjvy3CLGLj74T92OBceMDO83h9NhYaIReiEygNwTDElULnNEVYhMCkXDygj4bNMYtrrdkfDrIi9hZCAtEm1YQZqVSmp9yQypq9GbTmSZqWSAB5pSD0bB4AV5NJ4coeBYAEV0vJuEEFEAQrFFHglHkl7F5hHy2AwxFahGqBFo0nVKDYQA)
+Scheme of each cycle:
+![Solution](https://github.com/EdmanCoding/solutions-of-introduction-to-computing-systems/blob/patch-10/solutions/_attachments/3.53%20MS%20set.png)
 ---
 54. Solution:
 ![Solution](_attachments/Pasted%20image%2020241120205404.png)
+[falstad link | Live Circuit](https://www.falstad.com/circuit/circuitjs.html?ctz=CQAgjCAMB0l3BWcMBMcUHYMGZIA4UA2ATmIxAUgpABZsKBTAWjDACgw8bwNDwbuYYin7cakYn3adu2BCLACQ2QnlG0JUjlwoo1i7giUGNk8Nu4ZIgpRjTrxZ9gBkKhKqxEJ3tNQpAAZgCGADYAzgzUkGyuCMLgYF7xNH7ggaERUTEgOFKJOSq+IP7B4ZFI0a68+vnVRSUZ5VDZ2DqeyjopxWmlmRXZNGB5IoN8XQ1lWa4o4gkiM1TjPY1Txfhza2pLEL1NlSB4hIK8IML6JxN9zQDuB0c8fHjYCifRMiDuarjchDPK1qYtO89F8Ad9-mJNOZbodjo97ig-tEYQi-oRvMUkWxbuipCdcZjuMiPhjEWI8FQyTdfB4TilKVjbvTCRCWcTwWATuCqcS0H51nzihjeQKMc9KcLscp7CgxTK7NTWtxBUqhXx2TpZXw5PNJbcdWrlPJigrid5KetzYazT4tR9ZnbiUcJXxnSaRMTcpsCnxHVKvXbCAq-Tjgxig-NTdk6thCk8RLHfVB0pN+rcY4UvYnqRm+DGdJ7VB0xENi9TRmWK9m3p0ugItvd64DodKqCovvYK+zO6XmV2pW72-bFqWnbMKwh8v2ALI0ihTiluSnFaAIbIIOmLt3My57NgADwOCC+NBExDgyhoSGV3AAygBtFAAXQPp0nPGIp2I9E4I2Kd-vMAX0PQh0V8PNIHIFJPxvEAH0gYCKEtUCKGPNwYP-EAAHkAFUABVXyEBQkEFThaEwgBBV8UDkcASONMjYIAYVfbATlLbB4iEci-gAUVfcRyF7WVwAwv4AHFXwQd8yO8cgUAgWCACEpLwIS1HcZVFMwgARV87CEyxBh4HjuAAMX0346JyDBP0YzCAAk2CAA)
 ---
 55. Solution:
 	1. Solution:
@@ -286,7 +268,8 @@
 ![Solution](_attachments/Pasted%20image%2020241120211432.png)
 ---
 58. Solution:
-![Solution](_attachments/Pasted%20image%2020241120213447.png)
+![Solution](_attachments/3.58%20transistor%20circuit%20final.png)
+You can see instructive discussion about this exercise here [forum.allaboutcircuits.com](https://forum.allaboutcircuits.com/threads/gates-of-the-transistors-and-the-truth-table.206291/#post-1978260)
 ---
 59. Solution:
 ![Solution](_attachments/Pasted%20image%2020241120214409.png)
@@ -302,4 +285,5 @@
 	2. Solution:
 ![Solution](_attachments/Pasted%20image%2020241120230432.png)
 ---
-62. *This exercise requires a lot of energy, but gives very little. That's why I didn't try it.*
+62. Solution:
+![Solution](_attachments/3.62%20FSM%20.png)
