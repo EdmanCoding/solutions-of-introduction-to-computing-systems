@@ -155,7 +155,7 @@
         
         .END
 ---
-8. R2 might be populated previously and result might be uncorrect due to this.
+8. R2 might be populated previously and result might be incorrect due to this.
 ---
 9. Solution:
 	1. AND R0 R0 #0
