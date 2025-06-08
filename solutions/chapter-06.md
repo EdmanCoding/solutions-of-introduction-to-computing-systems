@@ -158,12 +158,25 @@
 8. R2 might be populated previously and result might be incorrect due to this.
 ---
 9. Solution:
-	1. AND R0 R0 #0
-	2. LD R0 [SOMEADDRESSHAVE100]
-	3. [ITERATIVE_START] TRAP DISPLAY 'Z'
-	4. ADD R0 R0 #-1
-	5. BRzp [ITERATIVE_START]
-	6. HALT
+	1. x3001 0010 000 0 0000 0101 ( LD R0, Z )
+	2. x3002 0010 001 0 0000 0101 (	LD R1, ONE_HUND )
+	3. x3003 1111 0000 0010 0001 ( DISPLAY TRAP x21 )
+	4. x3004 0001 001 001 1 11111 ( ADD R1, R1, #-1 )
+	5. x3005 0000 001 1 1111 1101 ( BRp DISPLAY )
+	6. x3006 1111 0000 0010	0101 ( TRAP x25 )
+ 	7. x3007 0000 0000 0101 1010 ( Z .FILL x5A )
+  	8. x3008 0000 0000 0110 0100 ( ONE_HUND .FILL X0064 )
+	- Assembly code for LC-3tools:
+	.ORIG x3001
+            LD R0 Z
+            LD R1 ONE_HUND
+DISPLAY     TRAP x21
+            ADD R1 R1 #-1
+            BRp DISPLAY
+            TRAP x25
+Z           .FILL x005A
+ONE_HUND    .FILL x0064
+	.END
 ---
 10. Solution:
 	1. AND R0 R2 #1
