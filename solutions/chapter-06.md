@@ -70,61 +70,90 @@
 	2. Assembler code in image:
 ![Solution](_attachments/6.6.%20asm%20code.png)
 	3. Actual assembler code:
-		AND R3, R3, #0
-     		ADD R6, R0, #0
-		ADD R7, R1, #0
-		AND R4, R7, #-1
+		AND R3 R3 #0
+     		ADD R6 R0 #0
+		ADD R7 R1 #0
+		AND R4 R7 #-1
        		BRz DONE
-      		AND R4, R6, #-1
+      		AND R4 R6 #-1
 		BRz DONE
        		BRn NEG1
-       		AND R4, R7, #-1
+       		AND R4 R7 #-1
        		BRp POS2
-      		NOT R7, R7
-       		ADD R7, R7, #1
+      		NOT R7 R7
+       		ADD R7 R7 #1
       		BRnzp NMULT
-	NEG1    NOT R6, R6
-     		ADD R6, R6, #1
-       		AND R4, R7, #-1
+	NEG1    NOT R6 R6
+     		ADD R6 R6 #1
+       		AND R4 R7 #-1
       		BRn POS1
-	NMULT   NOT R2, R6
-      		ADD R2, R2, #1
-       		ADD R4, R7, R2
+	NMULT   NOT R2 R6
+      		ADD R2 R2 #1
+       		ADD R4 R7 R2
       		BRn COUNT1
-		ADD R5, R6, #0
-	LOOP1   ADD R3, R3, R7
-     		ADD R5, R5, #-1
+		ADD R5 R6 #0
+	LOOP1   ADD R3 R3 R7
+     		ADD R5 R5 #-1
       		BRp LOOP1
-      		NOT R3, R3
-      		ADD R3, R3, #1
+      		NOT R3 R3
+      		ADD R3 R3 #1
        		BRnzp DONE
-	COUNT1  ADD R5, R7, #0
-	LOOP2   ADD R3, R3, R6
-      		ADD R5, R5, #-1
+	COUNT1  ADD R5 R7 #0
+	LOOP2   ADD R3 R3 R6
+      		ADD R5 R5 #-1
       		BRp LOOP2
-		NOT R3, R3
-      		ADD R3, R3, #1
+		NOT R3 R3
+      		ADD R3 R3 #1
 		BRnzp DONE
-	POS1    NOT R7, R7
-      		ADD R7, R7, #1
-	POS2    NOT R2, R6
-      		ADD R2, R2, #1
-      		ADD R4, R7, R2
+	POS1    NOT R7 R7
+      		ADD R7 R7 #1
+	POS2    NOT R2 R6
+      		ADD R2 R2 #1
+      		ADD R4 R7 R2
       		BRn COUNT2
-      		ADD R5, R6, #0
-	LOOP3   ADD R3, R3, R7
-      		ADD R5, R5, #-1
+      		ADD R5 R6 #0
+	LOOP3   ADD R3 R3 R7
+      		ADD R5 R5 #-1
       		BRp LOOP3
       		BRnzp DONE
-	COUNT2  ADD R5, R7, #0
-	LOOP4   ADD R3, R3, R6
-      		ADD R5, R5, #-1
+	COUNT2  ADD R5 R7 #0
+	LOOP4   ADD R3 R3 R6
+      		ADD R5 R5 #-1
       		BRp LOOP4
      		BRnzp DONE
 	DONE    TRAP x25
     .END
 ---
-7. It sums correspending elements of specific lengthed two list (i guess) and store them.
+7. It sums correspending elements of specific lengthed two list and store them.
+- Assembly code for LC-3tools:
+   .ORIG x3001
+        LEA R0 #12
+        LEA R1 #16
+        AND R2 R2 #0
+        LD R2 #19
+        LDR R3 R0 #0
+        LDR R4 R1 #0
+        ADD R3 R3 R4
+        STR R3 R0 #0
+        ADD R0 R0 #1
+        ADD R1 R1 #1
+        ADD R2 R2 #-1
+        BRp #-8
+        TRAP x25
+        
+        .FILL x0005
+        .FILL x0004
+        .FILL x0003
+        .FILL x0006
+        .FILL x0002
+        .FILL x0004
+        .FILL x0007
+        .FILL x0006
+        .FILL x0008
+        .FILL x0007
+        .FILL x0005
+        
+        .END
 ---
 8. R2 might be populated previously and result might be uncorrect due to this.
 ---
