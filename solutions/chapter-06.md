@@ -140,7 +140,6 @@
         ADD R2 R2 #-1
         BRp #-8
         TRAP x25
-        
         .FILL x0005
         .FILL x0004
         .FILL x0003
@@ -152,8 +151,7 @@
         .FILL x0008
         .FILL x0007
         .FILL x0005
-        
-        .END
+   .END
 ---
 8. R2 might be populated previously and result might be incorrect due to this.
 ---
