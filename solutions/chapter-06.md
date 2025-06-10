@@ -215,7 +215,6 @@ ONE_HUND    .FILL x0064
 EVEN        LEA R0 EVEN_STRING  ;Put the string "R2 is even" to R0
             PUTSP               ;Display the string
             HALT                ;Stop the programm
-
 NUMBER      .FILL #109          ;Put here any number to check
 ODD_STRING  .FILL x3252         ;String "R2 is odd"
             .FILL x6920
