@@ -182,20 +182,40 @@ ONE_HUND    .FILL x0064
 	3. BRnp [RESULT_ODD]
 ---
 11. Solution:
-	1. AND R0 R0 #0
-	2. AND R1 R1 #0
-	3. AND R2 R2 #0
-	4. AND R3 R3 #0
-	5. LD R0 [x3100]
-	6. LD R1 [x3101]
-	7. [LOOP_START] AND R2 R1 R0
-	8. BRz [DONE]
-	9. LDR R3 R0 #0
-	10. ADD R3 R3 #1
-	11. STR R3 R0 #0
-	12. ADD R0 R0 #1
-	13. BRnzp [LOOP_START]
-	14. [DONE] HALT
+-	x3000 	0010 000 011111111		( 	LD R0, x3100 )
+-	x3001 	0010 001 011111111		( 	LD R1, x3101 )
+-	x3003 	1001 010 000 111111		( 	NOT R2, R0 )
+-	x3004 	0001 010 010 1 00001		( 	ADD R2, R2, #1 )
+-	x3005	0001 011 001 0 00 010		( 	ADD R3, R1, R2 )
+-	x3006	0001 100 000 1 00000		( 	ADD R4, R0, #0 )
+-	x3007	0110 101 100 000000		( L 	LDR R5, R4, #0 )
+-	x3008	0001 101 101 1 00001 		( 	ADD R5, R5, #1 )
+-	x3009	0111 101 100 000000		( 	STR R5, R4, #0 )
+-	x300A 	0001 100 100 1 00001		( 	ADD R4, R4, #1 )
+-	x300B	0001 011 011 1 11111		(	ADD R3, R3, #-1 )
+-	x300C	0000  011 111111010		(	BRzp L )
+-	x300D	1111 000000100101		(	TRAP x25 )
+-	In the assembly code i did bigger range of memory locations for illustration:
+-	![Solution](_attachments/6.11%20assambly.png)
+-	Actual code:
+-	.ORIG x30E0
+        LD R0 PTR1
+        LD R1 PTR2
+        NOT R2 R0
+        ADD R2 R2 #1
+        ADD R3 R1 R2    ; count register
+        ADD R4 R0 #0    ; register to traverse through each memory location
+LOOP    LDR R5 R4 #0
+        ADD R5 R5 #1
+        STR R5 R4 #0
+        ADD R4 R4 #1
+        ADD R3 R3 #-1
+        BRzp LOOP
+        TRAP X25 
+PTR1    .FILL x3100      ; Holds address x3100 
+PTR2    .FILL x3109      ; Holds address x3109
+.END
+
 ---
 12. Solution:
 	1. a.
