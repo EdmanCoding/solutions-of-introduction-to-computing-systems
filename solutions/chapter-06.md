@@ -177,9 +177,61 @@ ONE_HUND    .FILL x0064
 	.END
 ---
 10. Solution:
-	1. AND R0 R2 #1
-	2. BRz [RESULT_EVEN]
-	3. BRnp [RESULT_ODD]
+-	x3000	0010 010 000001000		(	LD R2, NUMBER )
+-	x3001	0101 011 010 1 00001		(	AND R3, R2, #1 )
+-	x3002	0000 010 000000011		(	BRz EVEN )
+-	x3003 	1110 000 000000110		(	LEA R0, ODD_STRING )
+-	x3004	1111 0000 0010 0100		(	TRAP x24 )
+-	x3005	1111 0000 0010 0101		(	TRAP x25 )
+-	x3006	1110 000 000001001		(	LEA R0, EVEN_STRING )
+-	x3007	1111 0000 0010 0100		(	TRAP x24 )
+-	x3008	1111 0000 0010 0101		(	TRAP x25 )
+-	x3009 	0000 0000 0110 1101		( NUMBER		#109)
+-	x300A	0011 0010 0101 0010		( ODD_STRING	x3252  ; ASCII 52 – ‘R’, 32 – ‘2’ )
+-	x300B 	0110 1001 0010 0000		( x6920		; ASCII 20 – “space”, 69 – ‘i’ )
+-	x300C	0010 0000 0111 0011		( x2073		; ASCII 73 – ‘s’, 20 – “space” )
+-	x300D	0110 0100 0110 1111		( x646F		; ASCII 6F – ‘o’, 62 – ‘d’ )
+-	x300E	0000 1010 0110 0100		( x0A64	; ASCII 64 – ‘d’, 0A – “line feed” )
+-	x300F	0000 0000 0000 0000		( x0000		; PUTSP string termination )
+-	x3010	0011 0010 0101 0010		( EVEN_STRING	x3252  ; ASCII 52 – ‘R’, 32 – ‘2’ )
+-	x3011 	0110 1001 0010 0000		( x6920		; ASCII 20 – “space”, 69 – ‘i’ )
+-	x3012	0010 0000 0111 0011		( x2073		; ASCII 73 – ‘s’, 20 – “space” )
+-	x3013	0111 0110 0110 0101		( x7665		; ASCII 65 – ‘e’, 76 – ‘v’ )
+-	x3014	0110 1110 0110 0101		( x6E65		; ASCII 65 – ‘e’, 6E – ‘n’ )
+-	x3015	0000 0000 0000 1010		( x000A	; ASCII 0A – “line feed” )
+-	x3016	0000 0000 0000 0000		( x0000		; PUTSP string termination )
+-	I added the display of approptiate string to see is a value in R2 even or odd.
+-	![Solution](_attachments/6.10%20even%20odd.png)
+-	You can also do it using TRAP x22 and .STRINGZ command, but this uses 2 times more memory locations:
+-	![Solution](_attachments/6.10%20even%20odd%20v2.png)
+-	Assembly code:
+-	.ORIG x3000
+            LD R2 NUMBER
+            AND R3 R2 #1        ;Even|odd check
+            BRz EVEN        
+            LEA R0 ODD_STRING   ;Put the string "R2 is odd" to R0
+            PUTSP               ;Display the string
+            HALT                ;Stop the programm
+EVEN        LEA R0 EVEN_STRING  ;Put the string "R2 is even" to R0
+            PUTSP               ;Display the string
+            HALT                ;Stop the programm
+
+NUMBER      .FILL #109          ;Put here any number to check
+ODD_STRING  .FILL x3252         ;String "R2 is odd"
+            .FILL x6920
+            .FILL x2073
+            .FILL x646F
+            .FILL x0A64
+            .FILL x0000
+EVEN_STRING .FILL x3252         ;String "R2 is even"
+            .FILL x6920
+            .FILL x2073
+            .FILL x7665
+            .FILL x6E65
+            .FILL x000A
+            .FILL x0000
+.END
+
 ---
 11. Solution:
 -	x3000 	0010 000 011111111		( 	LD R0, x3100 )
