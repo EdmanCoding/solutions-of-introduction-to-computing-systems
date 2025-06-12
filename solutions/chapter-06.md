@@ -334,7 +334,16 @@ HALT
 ---
 15. STR R2 R4 #7
 ---
-16. Can't solve. Some instructions are not taught in the book.
+16. Solution:
+![Solution](_attachments/6.16%20table.png)
+-	x3000	0010 000 000000100   		( LD R0 #4 )   		; R0 = 48
+-	x3001	0001 000 000 1 00001		( ADD R0 R0 #1 )	; R0 = 49
+-	x3002	1011 000 000000011		( STI R0 #3 )		; stores 49 at x4001
+-	x3003	0110 001 000 110000		( LDR R1 R0 #-16 )	; loads the content of x0021 to R1
+-	x3004	1111 000 0010 0101		( TRAP x25 )
+-	x3005	0000 0000 0011 0000		( #48 )
+-	x3006	0100 0000 0000 0001		( x4001 )
+- There are a lot of options at x3003 with LDR or STR instructions and different destination registers, but R0 #-16 should be the same!
 ---
 17. BRnZp #15. I guess?
 ---
