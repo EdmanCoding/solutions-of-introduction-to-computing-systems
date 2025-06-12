@@ -345,7 +345,7 @@ HALT
 -	x3006	0100 0000 0000 0001		( x4001 )
 - There are a lot of options at x3003 with LDR or STR instructions and different destination registers, but R0 #-16 should be the same!
 ---
-17. BRnZp #15. I guess?
+17. JSR #15. The description of this instruction is in the appendix A. "The LC-3 ISA" page 691. 
 ---
 18. Solution:
 	1. First
