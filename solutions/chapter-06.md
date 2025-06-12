@@ -269,13 +269,27 @@ PTR2    .FILL x3109      ; Holds address x3109
 
 ---
 12. Solution:
-	1. a.
-		1. TRAP GET_INPUT
-		2. TRAP DISPLAY_INPUT
-	2. b.
-		1. TRAP GET_INPUT
-		2. ADD INPUT INPUT #-6
-		3. BRz DISPLAY_PREVIOUS_INPUT
+- Part A is trivial, so here is the part B:
+[!Solutin](https://github.com/EdmanCoding/solutions-of-introduction-to-computing-systems/blob/main/solutions/_attachments/6.11%20Display%20entered%20string.png)
+- Actual assambly code:
+- .ORIG x3000
+        LD R1 ENTER
+        NOT R1 R1
+        LD R2 SAVE_STRING
+        LD R4 TERMINATION
+LOOP    TRAP x23                ;IN - takes the key from the keyboard, echoes onto the console, saves to R0 
+        STR R0 R2 #0            ;stores the character to the memory location
+        ADD R2 R2 #1            ;increments the address to save the next character if any
+        AND R3 R1 R0            ;checks for the Enter input
+        BRnp LOOP               ;Loops until Enter is pressed
+        STR R4 R2 #0            ;stores the termination code to denote the end of the string for the PUTS command
+        LD R0 SAVE_STRING       ;saves the first memory location of the beginning of the string
+        TRAP x22                ;PUTS - displays the string onto the console
+        TRAP x25
+ENTER           .FILL x000A     ; Enter ASCII code
+SAVE_STRING     .FILL x3100     ; Beginning of the string
+TERMINATION     .FILL x0000     ; Termination of the string code
+.END
 ---
 13. Solution:
 	1. AND R0 R0 #0
