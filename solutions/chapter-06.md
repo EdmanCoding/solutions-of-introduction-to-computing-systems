@@ -319,6 +319,18 @@ NUMBER          .FILL x8421 ; Number to shift
 .END
 ---
 14. 9,10,11.
+- ![Solution](_attachments/6.14.png)
+- Code:
+.ORIG x3000
+AND R2 R2 #0
+ADD R1 R1 #-1
+ADD R1 R1 #-1
+ADD R1 R1 #-1
+BRn #2
+ADD R2 R2 #1
+BRnzp #-6
+HALT
+.END
 ---
 15. STR R2 R4 #7
 ---
