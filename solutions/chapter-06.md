@@ -292,14 +292,31 @@ TERMINATION     .FILL x0000     ; Termination of the string code
 .END
 ---
 13. Solution:
-	1. AND R0 R0 #0
-	2. AND R1 R1 #0
-	3. LD R0 x3100
-	4. [LOOP_START] ADD R0 R0 #-2
-	5. BRnz [DONE]
-	6. ADD R1 R1 #1
-	7. BRnzp [LOOP_START]
-	8. [DONE] ST R1 x3100
+- In comparison with the textbook solution, mine avoids using a mask by employing a separate register to store shifts.
+-![Solution](_attachments/6.13%20right%20shift.png)
+- Actual assambly code:
+- .ORIG x3000
+            AND R2 R2 #0
+            ADD R2 R2 #15   ; counter register
+            AND R3 R3 #0    ; register for shifting save
+            LD R1 NUMBER    ; register for shifting
+            BRz DONE        ; stop program if initial number is x0000
+            BRn NEGATIVE    ; add 1 to least significant bit (LSB) at R3 if MSB (most SB) is 1 at R1
+            BRp POSITIVE    ; add 0 to least significant bit (LSB) at R3 if MSB (most SB) is 0 at R1
+LOOP        ADD R1 R1 R1
+            BRn NEGATIVE
+POSITIVE    ADD R3 R3 R3
+            ADD R2 R2 #-1
+            BRnp LOOP       ; loop until R2 isn't equal to 0
+            BRz DONE
+NEGATIVE    ADD R3 R3 R3
+            ADD R3 R3 #1
+            ADD R2 R2 #-1
+            BRnp LOOP       ; loop until R2 isn't equal to 0
+DONE        ST R3 NUMBER    ; store the shifted number
+            TRAP x25
+NUMBER          .FILL x8421 ; Number to shift
+.END
 ---
 14. 9,10,11.
 ---
