@@ -270,7 +270,7 @@ PTR2    .FILL x3109      ; Holds address x3109
 ---
 12. Solution:
 - Part A is trivial, so here is the part B:
-[!Solutin](https://github.com/EdmanCoding/solutions-of-introduction-to-computing-systems/blob/main/solutions/_attachments/6.11%20Display%20entered%20string.png)
+![Solution](_attachments/6.11%20Display%20entered%20string.png)
 - Actual assambly code:
 - .ORIG x3000
         LD R1 ENTER
