@@ -405,21 +405,38 @@ REMINDER    .FILL x5001
         .FILL #3  ; divider
     .END
 ---
-19. Solution:
-	1. Doesn't load from x4000.
-	2. Doesn't save to x5000
-	3. Doesn't increment by 4.
-	4. Store encrypted data to wrong place.
-	5. LEA R0 x5000
-	6. LD R1 x4000
-	7. LDR R2 R1 #0
-	8. BRn HALT
-	9. [LOOP_START] ADD R2 R2 #4
-	10. STR R2 R0 #0
-	11. ADD R0 R0 #1
-	12. ADD R1 R1 #1
-	13. BRnzp [LOOP_START]
-	14. [HALT] TRAP
+19. 	The bugs are:
+	1.	The instruction at x3000 should be 0010 0000 0000 1010
+	2.	The instruction at x3004 should be 0001 0100 1010 0100
+	3.	The instruction at x3008 should be 0000 1111 1111 1001
+	4.	The instruction at x3009 should be 0111 0100 0100 0000
+    	- Code without bugs:
+    	![solution](_attachments/6.19%20encrypting.png)
+	- Assambly code :
+.ORIG x3000
+        LD R0 #10       ;x4000
+        LD R1 #10       ;x5000
+UP      LDR R2 R0 #0
+        BRz #5
+        ADD R2 R2 #4
+        STR R2 R1 #0
+        ADD R0 R0 #1
+        ADD R1 R1 #1
+        BRnzp UP
+        STR R2 R1 #0
+        TRAP x25
+    .FILL x4000 
+    .FILL x5000
+.END
+.ORIG x4000
+    .FILL x004D     ; ASCII 'M'
+    .FILL x0061     ; ASCII 'a'
+    .FILL x0074     ; ASCII 't'
+    .FILL x0074     ; ASCII 't'
+    .FILL x0000     ; end of the string
+.END
+	- The actual encrypted message at x5000 is 'Qexx', not 'Qeyy' as claimed in the textbook.
+
 ---
 20. only the negative number check in exercise 6 should be added to the answer in exercise 18.
 ---
