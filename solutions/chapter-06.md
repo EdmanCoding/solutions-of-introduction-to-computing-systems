@@ -438,7 +438,7 @@ UP      LDR R2 R0 #0
 	- The actual encrypted message at x5000 is 'Qexx', not 'Qeyy' as claimed in the textbook.
 
 ---
-20. only the negative number check in exercise 6 should be added to the answer in exercise 18.
+20. Solution 18 already works for all integers, not just positive integers.
 ---
 21. Solution:
 	1. x3003: R1 <- R0 - 15
