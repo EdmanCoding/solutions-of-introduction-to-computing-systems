@@ -348,69 +348,62 @@ HALT
 17. JSR #15. The description of this instruction is in the appendix A. "The LC-3 ISA" page 691. 
 ---
 18. Solution:
-	1. First
-		1. Initialize
-		2. Find small number
-		3. Sum small number with itself and count quotient
-		4. When you found quotient, subtract from bigger number you'll found remainder
-	2. Second
-		1. Initialize
-			1. AND R0 R0 #0
-			2. AND R1 R1 #0
-			3. AND R2 R2 #0
-			4. AND R3 R3 #0
-			5. AND R4 R4 #0
-			6. AND R5 R5 #0
-			7. LDI R0 [MEMORY_ADDRESS_CONTAIN_FIRST_NUM]
-			8. LDI R1 [MEMORY_ADDRESS_CONTAIN_SEC_NUM]
-		2. Operation
-			1. NOT R2 R0
-			2. ADD R2 R2 #1
-			3. ADD R2 R2 R1
-			4. BRn [FIRST_NUM_IS_SMALL_LOOP_START]
-			5. BRp [SEC_NUM_IS_SMALL_LOOP_START]
-			6. BRz [QUOTIENT_IS_1_REMAINDER_IS_0]
-			7. [FIRST_NUM_IS_SMALL_LOOP_START] ADD R3 R3 R0
-			8. ADD R2 R2 #1
-			9. NOT R4 R3
-			10. ADD R4 R4 #1
-			11. ADD R5 R4 R1
-			12. BRp [FIRST_NUM_IS_SMALL_LOOP_START]
-			13. BRz [NO_REMAINDER]
-			14. ADD R2 R2 #-1
-			15. ADD R4 R4 R0
-			16. NOT R4 R4
-			17. ADD R4 R4 #1
-			18. AND R3 R3 #0
-			19. ADD R3 R1 R4
-			20. STI R2 #[ADDRESS_CONTAIN_5000]
-			21. STI R3 #[ADDRESS_CONTAIN_5001]
-			22. BRnzp [DONE]
-			23. [SEC_NUM_IS_SMALL_LOOP_START] ADD R3 R3 R1
-			24. ADD R2 R2 #1
-			25. NOT R4 R3
-			26. ADD R4 R4 #1
-			27. ADD R5 R4 R0
-			28. BRp [SEC_NUM_IS_SMALL_LOOP_START]
-			29. BRz [NO_REMAINDER]
-			30. ADD R2 R2 #-1
-			31. ADD R4 R4 R1
-			32. NOT R4 R4
-			33. ADD R4 R4 #1
-			34. AND R3 R3 #0
-			35. ADD R3 R0 R4
-			36. STI R2 [ADDRESS_CONTAIN_5000]
-			37. STI R3 [ADDRESS_CONTAIN_5001]
-			38. BRnzp [DONE]
-			39. [NO_REMAINDER] STI R2 [ADDRESS_CONTAIN_5000]
-			40. AND R5 R5 #0
-			41. STI R5 [ADDRESS_CONTAIN_5001]
-			42. BRnzp [DONE]
-			43. [QUOTIENT_IS_1_REMAINDER_IS_0] ADD R3 R3 #1
-			44. STI R3 [ADDRESS_CONTAIN_5000]
-			45. STI R4 [ADDRESS_CONTAIN_5001]
-			46. [DONE] TRAP HALT
-		3. Exit
+- ![Solution](_attachments/6.18%20Flow%20chart.png)
+- ![Solution](_attachments/6.18%20division.png)
+- Actual code:
+	.ORIG x3000
+            AND R3 R3 #0
+            LDI R1 NUMERATOR
+            BRz DONE
+            BRn NEG1
+            LDI R2 DIVIDER
+            BRz DONE
+            BRp POS1
+            BRn NEG3
+NEG1        LDI R2 DIVIDER
+            BRz DONE
+            BRn NEG2
+            BRp NEG4
+NEG3        ADD R4 R1 R2
+            BRn DONE1
+            ADD R1 R1 R2
+            ADD R3 R3 #1
+            BRnzp NEG3
+DONE1       NOT R3 R3
+            ADD R3 R3 #1
+            NOT R1 R1
+            ADD R1 R1 #1
+            BRnzp DONE
+NEG4        ADD R4 R1 R2
+            BRp DONE2
+            ADD R1 R1 R2
+            ADD R3 R3 #1
+            BRnzp NEG4
+DONE2       NOT R3 R3
+            ADD R3 R3 #1
+            BRnzp DONE
+NEG2        NOT R1 R1
+            ADD R1 R1 #1
+            BRnzp LOOP
+POS1        NOT R2 R2
+            ADD R2 R2 #1
+LOOP        ADD R4 R1 R2
+            BRn DONE
+            ADD R1 R1 R2
+            ADD R3 R3 #1
+            BRnzp LOOP
+DONE        STI R3 QUOTIENT
+            STI R1 REMINDER
+            TRAP x25
+NUMERATOR   .FILL x4000 
+DIVIDER     .FILL x4001
+QUOTIENT    .FILL x5000
+REMINDER    .FILL x5001
+    .END
+    .ORIG x4000
+        .FILL #-9 ; numerator
+        .FILL #3  ; divider
+    .END
 ---
 19. Solution:
 	1. Doesn't load from x4000.
