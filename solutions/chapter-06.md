@@ -441,8 +441,7 @@ UP      LDR R2 R0 #0
 20. Solution 18 already works for all integers, not just positive integers.
 ---
 21. Solution:
-	1. x3003: R1 <- R0 - 15
-	2. x3009: R0 <- R0 + 1
+	- ![Solution](_attachments/6.21%20volume%20control%20.png)
 ---
 22. Solution:
 	1. x3004: BRz x300D
