@@ -444,12 +444,8 @@ UP      LDR R2 R0 #0
 	- ![Solution](_attachments/6.21%20volume%20control%20.png)
 ---
 22. Solution:
-	1. x3004: BRz x300D
-	2. x3008: AND R5 R2 R3
-	3. x300A: ADD R0 R0 #1
-	4. x300B: ADD R1 R1 #1
-	5. x300D: ADD R5 R5 #1
-	6. If password stored as negative number, instructions at x3007 and x3008 can be removed.
+-![Solution](_attachments/6.22%20lock%203.png)
+- If password stored as negative number, instructions at x3006 and x3007 can be removed.
 ---
 23. Solution: R0 = A52D, R1 = 1010
     |    PC    |  MAR  |  MDR   |    IR     |    R0    |     R1    |
