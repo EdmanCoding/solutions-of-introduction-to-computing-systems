@@ -444,7 +444,7 @@ UP      LDR R2 R0 #0
 	- ![Solution](_attachments/6.21%20volume%20control%20.png)
 ---
 22. Solution:
-	-![Solution](_attachments/6.22%20lock%203.png)
+	- ![Solution](_attachments/6.22%20lock%203.png)
 	- If password stored as negative number, instructions at x3006 and x3007 can be removed.
 ---
 23. Solution: R0 = A52D, R1 = 1010
