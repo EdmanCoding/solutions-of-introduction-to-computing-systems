@@ -459,7 +459,7 @@ UP      LDR R2 R0 #0
 ---
 24. 0110 0000 0100 0001: LDR R0 R1 #1
 ---
-25. at this point assembly coding has not yet been taught. but since the operation is done through registers and there is no memory access, the answer will be like this: the answer will result = result + 1 because the necessary bit insertion has not been done.
+25. Yes, the subtract executes correctly since ADD R3, R3, #1 is 0x16E1 in machine code. The line ".FILL x16E1" fills the memory location after line NOT R3, R1 with x16E1 in binary wich will be considered by instruction register as instruction.
 ---
 26. Solution:
 	1. a.
