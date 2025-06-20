@@ -73,6 +73,7 @@
 ![Solution](_attachments/6.6.%20asm%20code.png)
 	3. Actual assembler code:
     ```
+    .ORIG x3000
 		AND R3 R3 #0
      		ADD R6 R0 #0
 		ADD R7 R1 #0
