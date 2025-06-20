@@ -215,7 +215,7 @@ ONE_HUND    .FILL x0064
 -	![Solution](_attachments/6.10%20even%20odd%20v2.png)
 -	Assembly code:
 ```
-	.ORIG x3000
+.ORIG x3000
             LD R2 NUMBER
             AND R3 R2 #1        ;Even|odd check
             BRz EVEN        
@@ -240,6 +240,7 @@ EVEN_STRING .FILL x3252         ;String "R2 is even"
             .FILL x000A
             .FILL x0000
 .END
+
 ```
 ---
 11. Solution:
