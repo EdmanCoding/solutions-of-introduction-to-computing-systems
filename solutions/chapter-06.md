@@ -27,7 +27,7 @@
 		4. Stop
 ---
 3. Solution:
-   ```
+	```
 		x4000: .FILL x0005	     ; Machine ID
 		x4001: .FILL x3101	     ; Busy bitmask 
 		x4002: 0101 000 000 1 00000  ; AND R0, #0
@@ -45,7 +45,7 @@
 		x400E: 0001 110 110 0 00 000 ; ADD R6, R6+R0
 		x400F: 0011 110 111110001    ; ST R6, x4001
 		x4010: 1111 0000 00100101    ; TRAP, x25
-   ```
+	```
 	- Assembly: 
 ![Solution](_attachments/6.3%20busyness.png)
 ---
@@ -72,7 +72,6 @@
 	2. Assembler code in image:
 ![Solution](_attachments/6.6.%20asm%20code.png)
 	3. Actual assembler code:
-    ```
     .ORIG x3000
 		AND R3 R3 #0
      		ADD R6 R0 #0
@@ -127,11 +126,9 @@
      		BRnzp DONE
 	DONE    TRAP x25
     .END
-```
 ---
 7. It sums correspending elements of specific lengthed two list and store them.
 - Assembly code for LC-3tools:
-```
    .ORIG x3001
         LEA R0 #12
         LEA R1 #16
@@ -158,7 +155,6 @@
         .FILL x0007
         .FILL x0005
    .END
-```
 ---
 8. R2 might be populated previously and result might be incorrect due to this.
 ---
@@ -183,7 +179,7 @@ DISPLAY     TRAP x21
 Z           .FILL x005A
 ONE_HUND    .FILL x0064
 	.END
- ```
+```
 ---
 10. Solution:
 -	x3000	0010 010 000001000		(	LD R2, NUMBER )
