@@ -72,6 +72,7 @@
 	2. Assembler code in image:
 ![Solution](_attachments/6.6.%20asm%20code.png)
 	3. Actual assembler code:
+```
     .ORIG x3000
 		AND R3 R3 #0
      		ADD R6 R0 #0
@@ -126,6 +127,7 @@
      		BRnzp DONE
 	DONE    TRAP x25
     .END
+```
 ---
 7. It sums correspending elements of specific lengthed two list and store them.
 - Assembly code for LC-3tools:
