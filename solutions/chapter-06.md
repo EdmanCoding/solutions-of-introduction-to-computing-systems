@@ -131,6 +131,7 @@
 ---
 7. It sums correspending elements of specific lengthed two list and store them.
 - Assembly code for LC-3tools:
+```
    .ORIG x3001
         LEA R0 #12
         LEA R1 #16
@@ -157,6 +158,7 @@
         .FILL x0007
         .FILL x0005
    .END
+```
 ---
 8. R2 might be populated previously and result might be incorrect due to this.
 ---
