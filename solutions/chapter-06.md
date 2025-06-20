@@ -72,6 +72,7 @@
 	2. Assembler code in image:
 ![Solution](_attachments/6.6.%20asm%20code.png)
 	3. Actual assembler code:
+    ```
 		AND R3 R3 #0
      		ADD R6 R0 #0
 		ADD R7 R1 #0
@@ -125,9 +126,11 @@
      		BRnzp DONE
 	DONE    TRAP x25
     .END
+```
 ---
 7. It sums correspending elements of specific lengthed two list and store them.
 - Assembly code for LC-3tools:
+```
    .ORIG x3001
         LEA R0 #12
         LEA R1 #16
@@ -154,6 +157,7 @@
         .FILL x0007
         .FILL x0005
    .END
+```
 ---
 8. R2 might be populated previously and result might be incorrect due to this.
 ---
@@ -167,6 +171,7 @@
  	7. x3007 0000 0000 0101 1010 ( Z .FILL x005A )
   	8. x3008 0000 0000 0110 0100 ( ONE_HUND .FILL X0064 )
 	- Assembly code for LC-3tools:
+```
 	.ORIG x3001
             LD R0 Z
             LD R1 ONE_HUND
@@ -177,6 +182,7 @@ DISPLAY     TRAP x21
 Z           .FILL x005A
 ONE_HUND    .FILL x0064
 	.END
+ ```
 ---
 10. Solution:
 -	x3000	0010 010 000001000		(	LD R2, NUMBER )
@@ -207,7 +213,8 @@ ONE_HUND    .FILL x0064
 -	You can also do it using TRAP x22 and .STRINGZ command, but this uses 2 times more memory locations:
 -	![Solution](_attachments/6.10%20even%20odd%20v2.png)
 -	Assembly code:
--	.ORIG x3000
+```
+	.ORIG x3000
             LD R2 NUMBER
             AND R3 R2 #1        ;Even|odd check
             BRz EVEN        
@@ -232,7 +239,7 @@ EVEN_STRING .FILL x3252         ;String "R2 is even"
             .FILL x000A
             .FILL x0000
 .END
-
+```
 ---
 11. Solution:
 -	x3000 	0010 000 011111111		( 	LD R0, x3100 )
@@ -251,7 +258,8 @@ EVEN_STRING .FILL x3252         ;String "R2 is even"
 -	In the assembly code i did bigger range of memory locations for illustration:
 -	![Solution](_attachments/6.11%20assambly.png)
 -	Actual code:
--	.ORIG x30E0
+```
+	.ORIG x30E0
         LD R0 PTR1
         LD R1 PTR2
         NOT R2 R0
@@ -268,13 +276,14 @@ LOOP    LDR R5 R4 #0
 PTR1    .FILL x3100      ; Holds address x3100 
 PTR2    .FILL x3109      ; Holds address x3109
 .END
-
+```
 ---
 12. Solution:
 - Part A is trivial, so here is the part B:
 ![Solution](_attachments/6.11%20Display%20entered%20string.png)
 - Actual assambly code:
-- .ORIG x3000
+```
+.ORIG x3000
         LD R1 ENTER
         NOT R1 R1
         LD R2 SAVE_STRING
@@ -292,12 +301,14 @@ ENTER           .FILL x000A     ; Enter ASCII code
 SAVE_STRING     .FILL x3100     ; Beginning of the string
 TERMINATION     .FILL x0000     ; Termination of the string code
 .END
+```
 ---
 13. Solution:
 - In comparison with the textbook solution, mine avoids using a mask by employing a separate register to store shifts.
 -![Solution](_attachments/6.13%20right%20shift.png)
 - Actual assambly code:
-- .ORIG x3000
+```
+.ORIG x3000
             AND R2 R2 #0
             ADD R2 R2 #15   ; counter register
             AND R3 R3 #0    ; register for shifting save
@@ -319,10 +330,12 @@ DONE        ST R3 NUMBER    ; store the shifted number
             TRAP x25
 NUMBER          .FILL x8421 ; Number to shift
 .END
+```
 ---
 14. 9,10,11.
 - ![Solution](_attachments/6.14.png)
 - Code:
+```
 .ORIG x3000
 AND R2 R2 #0
 ADD R1 R1 #-1
@@ -333,6 +346,7 @@ ADD R2 R2 #1
 BRnzp #-6
 HALT
 .END
+```
 ---
 15. STR R2 R4 #7
 ---
@@ -353,6 +367,7 @@ HALT
 - ![Solution](_attachments/6.18%20Flow%20chart.png)
 - ![Solution](_attachments/6.18%20division.png)
 - Actual code:
+```
 	.ORIG x3000
             AND R3 R3 #0
             LDI R1 NUMERATOR
@@ -406,6 +421,7 @@ REMINDER    .FILL x5001
         .FILL #-9 ; numerator
         .FILL #3  ; divider
     .END
+```
 ---
 19. 	The bugs are:
 	1.	The instruction at x3000 should be 0010 0000 0000 1010
@@ -415,6 +431,7 @@ REMINDER    .FILL x5001
     	- Code without bugs:
     	![solution](_attachments/6.19%20encrypting.png)
 	- Assambly code :
+```
 .ORIG x3000
         LD R0 #10       ;x4000
         LD R1 #10       ;x5000
@@ -437,6 +454,7 @@ UP      LDR R2 R0 #0
     .FILL x0074     ; ASCII 't'
     .FILL x0000     ; end of the string
 .END
+```
 	- The actual encrypted message at x5000 is 'Qexx', not 'Qeyy' as claimed in the textbook.
 
 ---
