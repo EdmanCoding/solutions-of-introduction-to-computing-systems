@@ -23,20 +23,17 @@
    4. It sums odd numbers between 0 to E.
 ---
 7. Solution:
-
 ```
-                .ORIG   x3000
-                AND     R4, R4, TOTALBITCOUNT
-                AND     R3, R3, #0 (ONECOUNT)
-                AND     R2, R2, #0 (TEMP)
-                ADD     R1, R1, TESTNUMBER
-                ADD     R0, R0, NUMBER
+Most significant bit (MSB) method by Erkam (R3 is counter of 1s):
+        .ORIG   x3000
+                LD      R4, TOTALBITCOUNT
+                AND     R3, R3, #0  ;(ONECOUNT)
+                AND     R2, R2, #0  ;(TEMP)
+                LD      R1, TESTNUMBER
+                LD      R0, NUMBER
                 BRn     NEGNUMLOOP
                 BRzp    POSNUMLOOP
 NEGNUMLOOP      ADD     R3 R3 #1
-                ADD     R4 R4 #-1
-                NOT     R0 R0
-                BRnzp   POSNUMLOOP
 POSNUMLOOP      ADD     R0 R0 R0
                 ADD     R4 R4 #-1
                 BRz     DONE
@@ -45,9 +42,28 @@ POSNUMLOOP      ADD     R0 R0 R0
                 ADD     R3, R3, #1
                 BRnzp   POSNUMLOOP
 DONE            HALT
-NUMBER          .BLKW   1
+NUMBER          .FILL   xC0F1
 TOTALBITCOUNT   .FILL   x0010
 TESTNUMBER      .FILL   x8000
+        .END
+
+My initial solution with mask method:
+.ORIG x3000
+        LD R0 NUMBER
+        AND R2 R2 #0
+        ADD R2 R2 #1        ; mask
+        AND R1 R1 #0        ; 1's counter
+        AND R4 R4 #0
+        ADD R4 R4 #15       ; loop counter
+LOOP    AND R3 R0 R2
+        BRz NOT_0
+        ADD R1 R1 #1
+NOT_0   ADD R2 R2 R2
+        ADD R4 R4 #-1
+        BRzp LOOP
+        HALT
+NUMBER      .FILL xF001
+.END
 ```
 ---
 8. Solution:
