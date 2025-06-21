@@ -67,10 +67,12 @@ NUMBER      .FILL xF001
 ```
 ---
 8. Solution:
-   1. R0: 0xA400
-   2. R1: 0x23FF
-   3. R2: 0xE1FF
-   4. R3: 0xA402
+```
+R0: 0xA400
+R1: 0x23FF
+R2: 0xE1FF
+R3: 0xA401
+```
 ---
 9. .END pseudo-op is just for indicator to tell the assembler program ends at that point but it doesn't actually terminates the program it even won't existing in runtime. But halt terminates the program.
 ---
