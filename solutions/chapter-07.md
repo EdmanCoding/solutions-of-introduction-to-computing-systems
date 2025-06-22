@@ -213,9 +213,29 @@ NUMBERS .FILL   x4000
 17. It won't be problem because each module has own symbol table and assembler only checks external modules if an address labeled as EXTERNAL.
 ---
 18. Solution:
-    1. a. LDR R3 R0 #0
-    2. b. NOT R3 R3
-    3. c. ADD R3 R3 #1
+```
+    .ORIG x3000
+        LD  R1 FIRST
+        LD  R2 SECOND
+        AND R0 R0 #0
+LOOP    LDR R3 R1 #0    ; (a)
+        LDR R4 R2 #0    
+        BRz NEXT
+        ADD R1 R1 #1
+        ADD R2 R2 #1
+        NOT R4 R4       ; (b)
+        ADD R4 R4 #1    ; (c)
+        ADD R3 R3 R4	; if characters the same - result is zero
+        BRz LOOP
+        AND R5 R5 #0	; strings aren't the same
+        BRnzp DONE	; stop the program
+NEXT    AND R5 R5 #0
+        ADD R5 R5 #1
+DONE    TRAP x25
+FIRST   .FILL x4000
+SECOND  .FILL x4100
+    .END
+```
 ---
 19. The DATA labeled address holds #11, and the loop cycle decrements by 3 in every loop, so it will be executed only 4 times.
 ---
