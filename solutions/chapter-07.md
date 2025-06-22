@@ -158,7 +158,7 @@ RESEN_D	.FILL x0
  .END
 ```
 ---
-12. The program compares the first and second 8-bit halves of the value at x4000. R5 is set to 1 if they match, 0 otherwise..
+12. The program compares the first and second 8-bit halves of the value at x4000. R5 is set to 1 if they match, 0 otherwise.
 ---
 13. There is no SUM label and it will be detected at the assembly time because assembler wants to change this label with actual values. Also R1 is not initialized before being used. This will may occur wrong results and it will be debugable at the runtime.
 ---
