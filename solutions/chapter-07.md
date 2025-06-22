@@ -241,7 +241,7 @@ SECOND  .FILL x4100
 ---
 20. First one dynamically initialize value in runtime, but the second one initialize value at the assembly time.
 ---
-21. It counts negative numbers between x4000 and x400A and stores count at the x5000.
+21. It counts negative numbers between x4000 and x4009 and stores count at the x5000.
 ---
 22. Not try to solve. It'll take too much time.
 ---
