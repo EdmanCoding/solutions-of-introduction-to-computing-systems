@@ -189,7 +189,26 @@ SUM .FILL x0000
 ---
 15. It checks the MSB of the numbers and if they are positive, it doubles and store backs to their original memory address.
 ---
-16. It finds to if number is even or odd.
+16. The program counts the number of even and odd integers in the sequence stored at x4000, storing the results in registers R3 and R4 respectively.
+```
+.ORIG x3000
+        AND     R4, R4, #0	; counter for ODD numbers
+        AND     R3, R3, #0	; counter for EVEN numbers
+        LD      R0, NUMBERS	; Initialize pointer to x4000
+LOOP    LDR     R1, R0, #0	; Load current integer into R1
+        NOT     R2, R1		; R2 = NOT R1 (invert bits)
+        BRz     DONE		; If R2=0 (i.e., R1 was xFFFF/-1), end program
+        AND     R2, R1, #1	; Test LSB: R2 = R1 & 1 (0=even, 1=odd)
+        BRz     L1		; If R2=0 (even), jump to L1
+        ADD     R4, R4, #1	; ODD: Increment R4 (odd counter)
+        BRnzp   NEXT		; Skip even increment
+L1      ADD     R3, R3, #1	; EVEN: Increment R3 (even counter)
+NEXT    ADD     R0, R0, #1	; Move pointer to next integer
+        BRnzp   LOOP		; Repeat loop
+DONE    TRAP    x25
+NUMBERS .FILL   x4000
+ .END
+```
 ---
 17. It won't be problem because each module has own symbol table and assembler only checks external modules if an address labeled as EXTERNAL.
 ---
