@@ -157,7 +157,24 @@ RESEN_D	.FILL x0
 ---
 12. The program compares the first and second 8-bit halves of the value at x4000. R5 is set to 1 if they match, 0 otherwise.
 ---
-13. There is no SUM label and it will be detected at the assembly time because assembler wants to change this label with actual values. Also R1 is not initialized before being used. This will may occur wrong results and it will be debugable at the runtime.
+13. There is no SUM label and it will be detected at the assembly time because assembler wants to change this label with actual values. Also R1 is not initialized before being used. This will may occur wrong results and it will be debugable at the runtime. The labels 'ONE', 'TWO', and 'THREE' serve no purpose, so they should be converted into comments.
+```
+    .ORIG x3000
+        LD  R0 A       ;ONE
+        AND R1 R1 #0
+        ADD R1 R1 R0
+        LD  R0 B       ;TWO
+        ADD R1 R1 R0
+        LD  R0 C       ;THREE
+        ADD R1 R1 R0
+        ST  R1 SUM
+        TRAP x25
+A   .FILL x0001
+B   .FILL x0002
+C   .FILL x0003
+SUM .FILL x0000
+    .END
+```
 ---
 14. Solution:
     1. a.
