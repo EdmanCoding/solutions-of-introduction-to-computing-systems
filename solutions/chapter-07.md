@@ -177,13 +177,15 @@ SUM .FILL x0000
 ```
 ---
 14. Solution:
-    1. a.
-       1. 1011 0000 0000 0010
-       2. 1111 0000 0010 0001
-       3. 1111 0000 0010 0101
-       4. 0000 0000 0010 0101
-    2. Instead of use STI it should use LD. Because TRAP instruction uses register to display. STI uses for storing data from register to memory not to load data from memory to register to use for TRAP.
-    3. Because of use STI, TRAP doesn't get any data for displaying. So it will be probably display nothing.
+    a.
+```
+       1011 0000 0000 0010
+       1111 0000 0010 0001
+       1111 0000 0010 0101
+       0000 0000 0010 0101
+```
+    b. Instead of use STI it should use LD. Because TRAP instruction uses register to display. STI uses for storing data from register to memory not to load data from memory to register to use for TRAP.
+    c. STI will attempt to store the value from R0 at memory location x0025, which is reserved for system routines. This is why executing 'STI R0, LABEL' will cause an access violation.
 ---
 15. It checks the MSB of the numbers and if they are positive, it doubles and store backs to their original memory address.
 ---
