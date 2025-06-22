@@ -78,9 +78,87 @@ R3: 0xA401
 ---
 10. Literal #30, exceeds range of literal of ADD operation. ADD operation literal can be -16 to 15. Assembler will detect incorrect use of literal, so it will be detect when assembling.
 ---
-11. Not try to solve. It'll take too much time.
+11. Solution:
+```
+.ORIG	x3000
+        IN		        ; input the first char - either x or # 
+        AND	R3, R3, #0
+        ADD	R3, R3, #9  ; R3 = 9 if we are working
+                        ; with a decimal or 16 if hex
+        LD	R4, NASCIID     ;-x30 or -48
+        LD	R5, NHEXDIF     ;-x11 or -17
+
+        LD	R1, NCONSD      ;-x23 or -35
+        ADD	R1, R1, R0
+        BRz	GETNUMS
+        LD	R1, NCONSX      ;-x78 or -120
+        ADD	R1, R1, R0
+        BRnp FAIL
+        ADD	R3, R3, #6	; R3 = 15
+
+GETNUMS IN
+        ST	R0, CHAR1 
+        IN
+        ST	R0, CHAR2
+        LEA	R6, CHAR1
+        AND	R2, R2, #0
+        ADD	R2, R2, #2	; Loop twice
+                        ; Using R2, R3, R4, R5, R6 here
+        AND	R0, R0, #0	; Result
+LOOP	ADD	R1, R3, #0
+        ADD	R7, R0, #0 	
+LPCUR   ADD	R0, R0, R7
+        ADD	R1, R1, #-1
+        BRp	LPCUR
+
+        LDR	R1, R6, #0
+        ADD	R1, R1, R4
+
+        ADD	R0, R0, R1
+
+        ADD	R1, R1, R5
+        BRn	DONECUR
+        ADD	R0, R0, #-7	; for hex numbers
+DONECUR
+        ADD	R6, R6, #1
+        ADD	R2, R2, #-1
+        BRp	LOOP
+        ; R0 has number at this point 
+        AND	R2, R2, #0
+        ADD	R2, R2, #8
+
+        LEA	R3, RESEN_D
+        LD	R4, ASCNUM
+        AND	R5, R5, #0
+        ADD	R5, R5, #1
+
+STLP	AND	R1, R0, R5
+        BRp	ONENUM
+        ADD	R1, R4, #0
+        BRnzp	STORCH 
+ONENUM	ADD	R1, R4, #1 
+STORCH	ADD	R5, R5, R5
+        STR	R1, R3, #-1
+        ADD	R3, R3, #-1
+        ADD	R2, R2, #-1
+        BRp	STLP
+        LEA	R0, RES 
+        PUTS
+FAIL	HALT 
+CHAR1	.FILL	x0 
+CHAR2	.FILL	x0
+ASCNUM	.FILL	x30	
+NHEXDIF	.FILL	xFFEF	;	-x11   -17
+NASCIID	.FILL	xFFD0	;	-x30   -48
+NCONSX	.FILL	xFF88	;	-x78  -120
+NCONSD	.FILL	xFFDD	;	-x23   -35
+
+RES	    .BLKW 8 
+RESEN_D	.FILL x0
+ .END
+```
 ---
-12. It shifts left.
+12. The program compares the first and second 8-bit halves of the value at x4000. R5 is set to 1 if they match, 0 otherwise..
 ---
 13. There is no SUM label and it will be detected at the assembly time because assembler wants to change this label with actual values. Also R1 is not initialized before being used. This will may occur wrong results and it will be debugable at the runtime.
 ---
