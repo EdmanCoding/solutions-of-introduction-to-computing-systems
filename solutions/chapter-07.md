@@ -113,14 +113,11 @@ LPCUR   ADD	R0, R0, R7
 
         LDR	R1, R6, #0
         ADD	R1, R1, R4
-
         ADD	R0, R0, R1
-
         ADD	R1, R1, R5
         BRn	DONECUR
         ADD	R0, R0, #-7	; for hex numbers
-DONECUR
-        ADD	R6, R6, #1
+DONECUR ADD	R6, R6, #1
         ADD	R2, R2, #-1
         BRp	LOOP
         ; R0 has number at this point 
