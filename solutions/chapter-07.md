@@ -625,7 +625,18 @@ TRAPSTR     .STRINGZ "1111"
     4. ADD R1, R1, #-1
     5. BRnzp LOOP
 ---
-24. Because first line of LOOP doesn't check the R2 which is for tracking shift count. Lines of ADD R2, R2, #-1 and ADD R3, R3, R3 should change their positions.
+24. The first line of LOOP doesn't check the R2 which is for tracking shift count. Lines of ADD R2, R2, #-1 and ADD R3, R3, R3 should change their positions.
+```
+    .ORIG x3000 
+        AND R2 R2 #0
+        ADD R2 R2 #4
+LOOP    ADD R3 R3 R3
+        ADD R2 R2 #-1
+        BRz DONE
+        BR LOOP          
+DONE    HALT
+    .END
+```
 ---
 25. It'll give assembly error because it exceed LC-3's memory address capacity.
 ---
