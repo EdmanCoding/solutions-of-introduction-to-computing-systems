@@ -640,7 +640,7 @@ DONE    HALT
 ---
 25. It'll give assembly error because it exceed LC-3's memory address capacity.
 ---
-26. They'll give same output. Only difference is label naming and this doesn't affect the execution of program.
+26. The two resulting machine language programs are the same. Names of the labels don't effect the machine code. 
 ---
 27. Solution:
     1. Can't figure out
