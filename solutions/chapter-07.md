@@ -643,10 +643,10 @@ DONE    HALT
 26. The two resulting machine language programs are the same. Names of the labels don't effect the machine code. 
 ---
 27. Solution:
-    1. Can't figure out
-    2. Can't figure out.
-    3. R1 shift count
-    4. R6 holds shifted value/result.
+    1. The program logical right-shifts the number in R0 by the number in R1 and puts it in RESULT.
+    2. R0 holds the input number to right-shift. Range = [x0000 to xFFFF]
+    3. R1 holds the amount to right-shift. Range = [1 to 15]
+    4. R6 holds the right-shifted output. Range = [x0000 to x7FFF]
 ---
 28. Can't solve.
 ---
