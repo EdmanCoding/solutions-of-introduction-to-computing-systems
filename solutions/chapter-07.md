@@ -681,7 +681,7 @@ DONE    HALT
 34. Solution:
     1. NOT R2, R0
     2. ADD R2, R2, #1
-    3. BRz DONE
+    3. BRnz DONE
     4. ADD R0, R0, #1
 ---
 35. Solution:
