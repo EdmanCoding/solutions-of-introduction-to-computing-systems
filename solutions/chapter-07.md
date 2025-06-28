@@ -651,7 +651,16 @@ DONE    HALT
 28. Can't solve.
 ---
 29. Solution:
-    1. a: x1801, d: x1802, f: x1800, h: x1803, I: x0ffd
+    ![Solution](_attachments/7.29%20table.png)
+```
+.ORIG x17FF
+        STI R7 #-2      ; indirect store x2211 at x17FE -> x7FFF
+        LEA R5 #66      ; store x1867 at R5
+        ST  R5 #-2      ; store x1867 at x1800
+        BR  #-3         ; branch to x1800
+        ADD R4 R1 #7    ; IR = x1867
+.END
+```
 ---
 30. Can't solve.
 ---
