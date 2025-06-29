@@ -692,4 +692,27 @@ DONE    HALT
     2. At the line 10, instead of ST it should be STI.
 ---
 37. Solution:
-    ![Solution](_attachments/Pasted%20image%2020250110234939.png)
+```
+1	x3000
+2	x1263		;R1 = R1 + 3 (ADD R1 R1 #0)
+3	x009A		;R1 = 154
+4	x3001		;MDA x3001 -> MDR xA000
+5	xA000		;LDI R0 #0
+6	x3002		;MDA x3002 -> MDR M[x3002]
+7	x3000		;MDA M[x3002] -> MDR M[M[x3002]]
+8	x1263		;MDR M[M[x3002]] -> R0
+9	x3002		;MDA x3002 -> MDR M[x3002]
+10	x3000		;MDR M[x3002] -> IR   (ST R0 #0)
+11	x3003		;MDA x3003		
+12	x1263		;MDR M[x3003] <- x1263
+13	x3003		;MDA x3003 -> MDR x1263
+14	x1263		;R1 = R1 + 3  
+15	x009D		;157
+	R0 = x1263, R1 = 157
+```
+```
+        ADD R1 R1 #3    ; x1263 = 0001 0010 0110 0011,  R1 = x009A = 154
+        LDI R0 #0 	; xA000
+        ST R0 #0 	; x3003 = x1263
+        ADD R1 R1 #3    ; R1+3 = 157
+```
