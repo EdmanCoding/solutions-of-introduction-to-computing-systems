@@ -685,7 +685,7 @@ DONE    HALT
     4. ADD R0, R0, #1
 ---
 35. Solution:
-	![Solution](_attachments/Pasted%20image%2020250110232306.png)
+	![Solution](_attachments/7.35%20table.png)
 ---
 36. Solution:
     1. R0 = A, R1 = B, R2 = -B
