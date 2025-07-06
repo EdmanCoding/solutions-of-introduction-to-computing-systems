@@ -47,52 +47,120 @@ Moving data in registers consumes more power than memory pointer updates.
    ```  
    Overflow checks are unnecessary since peek doesn’t push to the stack.
 ---
-5. Partial solution:
+5. Solution:
 
 ```assembly
-POP     AND	    R5,	R5,	#0
-        ST	    R1,	Save1
-        ST      R2, Save2
-        ST      R3, Save3
-        LDR	    R1,	TOP, #0
-        NOT     R1, R1
-        ADD     R1, R1, #1          ; NEGATIVE OF TOP
-        LDR     R2, BOTTOM, #0
-        ADD     R2, R1, R2          ; R2 will be 0 (which means stack full) or a
-                                    ; positive value which means current stack
-                                    ; element count.
-        BRz     UNDERFLOW
-                                    ; THE ACTUAL "POP" STARTS
-        LDR     R0, TOP, #0         ; R0 holds value of TOP address. (Popped element)
-        LD      R3, BOTTOM          ; R3 holds bottom address.
-        ADD     R4, R3, #-1         ; Decrease by 1 address of the end of the stack
-        ST	    R4,	BOTTOM,	#0      ; Store new end of stack address.
+;Subroutines for carrying out the PUSH and POP functions. This
+;program works with a stack consisting of memory locations x3FFF
+;through x3FFB. 
+    .ORIG x4001
+        LD R0 EIGHTEEN      ;This code just
+        JSR PUSH            ;for checking 
+        BRp QUIT            ;the stack code 
+        LD R0 THIRTY_ONE    ;with the different
+        JSR PUSH            ;sceneries.
+        BRp QUIT
+        AND R0 R0 #0
+        ADD R0 R0 #5
+        JSR PUSH
+        BRp QUIT
+        AND R0 R0 #0
+        ADD R0 R0 #12
+        JSR PUSH
+        ADD R0 R0 #5
+        JSR PUSH
+        ADD R0 R0 #5
+        JSR PUSH
+        BRp QUIT
+        JSR POP
+        BRp QUIT
+        JSR POP
+        BRp QUIT
+        JSR POP
+        BRp QUIT
+        JSR POP
+        BRp QUIT
+        JSR POP
+        BRp QUIT
 
-SHIFTLOOP                           ;
-        LDR     R1, R3, #0          ; Load from end of the stack.
-        STR     R1, R3, #-1         ; Move end of stack the previous address
-        ADD     R3, R3, #-1         ; Decrease by 1 address of the end of the stack
-        ADD     R2, R2, #-1         ; Decrease element count in stack.
-        BRz     SHIFTENDED
-        BRnzp   SHIFTLOOP
+POP     ST  R2 Save1
+        ST  R3 Save2
+        ST  R4 Save3
+        LD  R2 NUMBER_OF_LOCATIONS  ;R2 = number of occupied locations of the stack
+        BRz fail_exit               ;is stack empty?
+        LDI R0 TOP
+        LD  R3 TOP
+        ADD R2 R2 #-1               ;Store new number of
+        ST  R2 NUMBER_OF_LOCATIONS  ;occupied locations.
+        BRz DONE                    ;done if R2 was 1
+LOOP    ADD R3 R3 #1                ;else rearrange the stack
+        LDR R4 R3 #0
+        STR R4 R3 #-1
+        ADD R2 R2 #-1
+        BRp LOOP
+DONE    AND R4 R4 #0
+        STR R4 R3 #0                ;clear last location
+        BR  success_exit
+        
+PUSH    ST  R2 Save1
+        ST  R3 Save2
+        ST  R4 Save3
+        ST  R6 Save4
+        LD  R2 NUMBER_OF_LOCATIONS  ;R2 = number of occupied locations of the stack
+        ADD R3 R2 #-5               ;stack consist of 5 locations
+        BRz fail_exit2              ;is stack full?
+        LD  R4 TOP
+        ADD R2 R2 #0                
+        BRz DONE2                   ;is stack empty?
+LOOP2   ADD R3 R4 R2                ;else rearrange the stack
+        LDR R6 R3 #-1
+        STR R6 R3 #0
+        ADD R2 R2 #-1
+        BRp LOOP2
+DONE2   STR R0 R4 #0                ;store new value at the top
+        LD  R2 NUMBER_OF_LOCATIONS
+        ADD R2 R2 #1                ;Store new number of
+        ST  R2 NUMBER_OF_LOCATIONS  ;occupied locations.
+        BR  success_exit2
+        
+success_exit    LD  R4, Save3
+                LD  R3, Save2     ;Restore original
+                LD  R2, Save1     ;register values.
+                AND R5, R5, #0    ;R5 <--success
+                RET
+success_exit2   LD  R6, Save4
+                LD  R4, Save3
+                LD  R3, Save2     ;Restore original
+                LD  R2, Save1     ;register values.
+                AND R5, R5, #0    ;R5 <--success
+                RET
 
-SHIFTENDED
-        LD      R1, Save1           ; Restore original values
-        LD      R2, Save2           ; Restore original values
-        LD      R3, Save3           ; Restore original values
-        RET
+fail_exit   LD  R4, Save3
+            LD  R3, Save2     ;Restore original
+            LD  R2, Save1     ;register values.
+            AND R5, R5, #0
+            ADD R5, R5, #1    ;R5 <--failure
+            RET
+fail_exit2  LD  R6, Save4
+            LD  R4, Save3
+            LD  R3, Save2     ;Restore original
+            LD  R2, Save1     ;register values.
+            AND R5, R5, #0
+            ADD R5, R5, #1    ;R5 <--failure
+            RET
+QUIT    HALT
 
-UNDERFLOW
-        LD      R1, Save1           ; Restore original values
-        LD      R2, Save2           ; Restore original values
-        LD      R3, Save3           ; Restore original values
-        ADD     R5, R5, #1          ; Failure
+TOP     .FILL x3FFB
+NUMBER_OF_LOCATIONS .FILL x0000 ;number of occupied locations of the stack
 
-TOP     .FILL	xC000
-BOTTOM  .FILL	xC005
-Save1   .FILL	x0000
-Save2   .FILL	x0001
-Save3   .FILL	x0001
+Save1   .FILL x0000
+Save2   .FILL x0000
+Save3   .FILL x0000
+Save4   .FILL x0000
+
+EIGHTEEN     .FILL x0012
+THIRTY_ONE   .FILL x001F
+    .END
 ```
 
 ---
