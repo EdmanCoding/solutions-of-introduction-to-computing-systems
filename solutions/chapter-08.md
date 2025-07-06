@@ -2,7 +2,32 @@
 
 1. It works with last-in first-out mechanism. So when you insert an element, it adds to the top of the list, and when you get an element from the list, it gives you the last element you added.
 ---
-2. Require way less operation to adding and removing data from stack.
+2.
+   - **No Data Shifting Overhead**
+Figure 8.8 (Hardware Registers):
+
+Every PUSH/POP requires moving all existing stack entries up or down.
+
+Example: Pushing 12 in (b) forces 18 to shift down. This is an O(n) operation for *n* elements.
+
+Figure 8.9 (Memory):
+
+Only the stack pointer (e.g., R6) moves; data stays fixed in memory.
+
+PUSH/POP are O(1) operations (just update the pointer).
+
+   - **Unlimited Depth**
+Hardware Registers: Limited by the number of physical registers (e.g., 5 in Figure 8.8).
+
+Memory: Only limited by available memory (e.g., LC-3’s 65,536 addresses).
+
+   - **Better for Recursion/Subroutines**
+Memory stacks handle nested calls gracefully (no register shuffling).
+
+Critical for LC-3’s JSR/RET instructions, which rely on R6 (stack pointer).
+
+   - **Energy Efficiency**
+Moving data in registers consumes more power than memory pointer updates.
 ---
 3. Solution:
    1. POP R7
