@@ -2,7 +2,7 @@
 
 1. It works with last-in first-out mechanism. So when you insert an element, it adds to the top of the list, and when you get an element from the list, it gives you the last element you added.
 ---
-2.
+2.  
    - **No Data Shifting Overhead**  
 Figure 8.8 (Hardware Registers):
 
