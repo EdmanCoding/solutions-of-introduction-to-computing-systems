@@ -42,7 +42,8 @@ Moving data in registers consumes more power than memory pointer updates.
    4. ADD R2 R6 R1
    5. BRz UNDERFLOW
    6. LDR R0 R6 #0
-   7. RET
+   7. RET  
+   Overflow checks are unnecessary since peek doesn’t push to the stack.
 ---
 5. Partial solution:
 
