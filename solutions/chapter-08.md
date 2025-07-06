@@ -30,19 +30,19 @@ Critical for LC-3’s JSR/RET instructions, which rely on R6 (stack pointer).
 Moving data in registers consumes more power than memory pointer updates.
 ---
 3. Solution:
-   1. POP R7
-   2. POP R0
-   3. PUSH R1
-   4. PUSH R3
+   a. PUSH  R1
+   b. POP   R0
+   c. PUSH  R3
+   d. POP   R7
 ---
-4. Solution:
-   1. ST R1 S1
-   2. ST R2 S2
-   3. LD R1 EMPTY
-   4. ADD R2 R6 R1
-   5. BRz UNDERFLOW
-   6. LDR R0 R6 #0
-   7. RET  
+4. Solution:  
+   ST R1 S1
+   ST R2 S2
+   LD R1 EMPTY
+   ADD R2 R6 R1
+   BRz UNDERFLOW
+   LDR R0 R6 #0
+   RET  
    Overflow checks are unnecessary since peek doesn’t push to the stack.
 ---
 5. Partial solution:
