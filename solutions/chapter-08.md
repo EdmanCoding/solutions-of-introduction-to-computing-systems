@@ -369,8 +369,8 @@ Save2   .FILL x0000
 ---
 8. Solution:
    1. F and A.
-   2. After PUSH J and PUSH K.
-   3. Just M.
+   2. At point when the stack consist of A, C, D.
+   3. A, F, and M.
 ---
 9. Solution:
    1. BDECJKIHLG
