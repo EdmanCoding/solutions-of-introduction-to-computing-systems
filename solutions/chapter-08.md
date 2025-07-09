@@ -212,49 +212,158 @@ Save2   .FILL x0000
 7. Solution:
 
 ```assembly
-POP             AND     R5,R5,#0 ; R5 <-- success
-                ST      R1,Save1 ; Save registers that
-                ST      R2,Save2 ; are needed by POP
-                LD      R1, COUNT    ; R1 <-- Current element count
-                LD      R2, CAPACITY ; R2 <-- Negative stack capacity
-                ADD     R3, R1, R2
-                NOT	    R3,	R3
-                ADD     R3, R3, #1
-                ADD	    R3,	R3,	R2  ; If count + (-capacity) + capacity = 0,
-                                    ; it means stack is empty.
-                BRz     fail_exit
-                ;
-                LDR     R0,R6,#0 ; The actual "pop"
-                ADD     R6,R6,#1 ; Adjust stack pointer
-                BRnzp   success_exit
-                ;
-PUSH            AND     R5,R5,#0
-                ST      R1,Save1 ; Save registers that
-                ST      R2,Save2 ; are needed by PUSH
-                LD      R1, COUNT    ; R1 <-- Current element count
-                LD      R2, CAPACITY ; R2 <-- Negative stack capacity
-                ADD	    R3,	R1,	R2  ; If count + (-capacity) = 0,
-                                    ; it means stack is full.
-                ;
-                ADD     R6,R6,#-1 ; Adjust stack pointer
-                STR     R0,R6,#0 ; The actual "push"
-success_exit    LD      R2,Save2 ; Restore original
-                LD      R1,Save1 ; register values
-                LD      R3,Save3
+.ORIG x3000
+;Subroutines for carrying out the PUSH and POP functions. This
+;program works with a stack consisting of 5 elements of arbitrary sizes.
+;The stack starts at x3FFF and grows downward (to x3FFE, x3FFD, etc.).
+;input: R1 - number of locations (from 1 to 4); R0, R2, R3, R6 - values
+    ADD R1 R1 #4        ; this block is for testing
+    ADD R0 R0 #13
+    ADD R2 R2 #9
+    ADD R3 R3 #5
+    ADD R6 R6 #10
+    JSR PUSH
+    ADD R1 R1 #-2
+    ADD R0 R0 #3
+    ADD R2 R2 #6
+    JSR PUSH
+    JSR POP
+    JSR POP
+    JSR POP
+    HALT
+
+POP ST  R4 Save1
+    LD  R5 NUMBER_OF_ELEMENTS
+    BRz fail_exit2                  ; Branch if stack is empty
+    ADD R5 R5 #-1           
+    ST  R5 NUMBER_OF_ELEMENTS       ; save new number of elements after current pop
+    LEA R4 NUMBER_OF_LOC_IN_EL_1    
+    ADD R4 R4 R5                    ; select top element
+    LDR R5 R4 #0                    ; load number of values at the top element to R5
+   
+    ADD R4 R5 #-4                   ; choose appropriate size by matching the number of values
+    BRz SIZE_4
+    ADD R4 R5 #-3
+    BRz SIZE_3
+    ADD R4 R5 #-2
+    BRz SIZE_2
+    ADD R4 R5 #-1
+    BRz SIZE_1
+    BR  fail_exit2 
+
+SIZE_4  LD R5 POINTER       ; Load output registers,
+        LDR R6 R5 #0        ; set pointer to the new top 
+        LDR R3 R5 #1
+        LDR R2 R5 #2
+        LDR R0 R5 #3
+        ADD R5 R5 #4
+        BR  RETURN
+SIZE_3  LD R5 POINTER
+        LDR R3 R5 #0
+        LDR R2 R5 #1
+        LDR R0 R5 #2
+        ADD R5 R5 #3
+        BR  RETURN
+SIZE_2  LD R5 POINTER
+        LDR R2 R5 #0
+        LDR R0 R5 #1
+        ADD R5 R5 #2
+        BR  RETURN
+SIZE_1  LD R5 POINTER
+        LDR R0 R5 #0
+        ADD R5 R5 #1
+        BR  RETURN
+RETURN  ST  R5 POINTER      ; save pointer to the new top
+        LD  R4 Save1        
+        AND R5 R5 #0        ; R5 <--success
+        RET
+    
+    
+PUSH    ST  R0 Save1
+        ST  R4 Save2
+        ST  R0 LOCATION1            ; Store R0 right away since R0 is the first value 
+                                    ; and quantity of pushed values can't be less than 1.
+        LD  R0 NUMBER_OF_ELEMENTS   ; How much elements in the stack alredy exist?
+        ADD R0 R0 #-5               ; It shouldn't be more than 5, since 5 is a full stack.
+        BRz fail_exit               ; If stack alredy full - return from the subroutine .
+        ADD R0 R1 #-4               ; Number of values we push shouldn't be more than 4.
+        BRp fail_exit               ; If more than 4 - return from the subroutine.
+        ST  R1 NUMBER_OF_LOCATIONS  ; Save namber of values we want to push.
+        
+        AND R0 R0 #0                ; This block finds appropriate routine for specified number of values 
+        ADD R0 R0 #-1               
+        ADD R5 R0 R1
+        BRz SIZE_ONE
+        ADD R0 R0 #-1
+        ADD R5 R0 R1
+        BRz SIZE_TWO
+        ADD R0 R0 #-1
+        ADD R5 R0 R1
+        BRz SIZE_THREE
+        ADD R0 R0 #-1
+        ADD R5 R0 R1
+        BRz SIZE_FOUR
+        BR fail_exit
+SIZE_ONE    LD  R5 POINTER      ; routine for 1 value (R0 alredy stored)
+            LEA R0 LOCATION1
+            BR  PUSHING
+SIZE_TWO    ST  R2 LOCATION2    ; routine for 2 values
+            LD  R5 POINTER
+            LEA R0 LOCATION1
+            BR  PUSHING
+SIZE_THREE  ST  R2 LOCATION2    ; routine for 3 values
+            ST  R3 LOCATION3
+            LD  R5 POINTER
+            LEA R0 LOCATION1
+            BR  PUSHING
+SIZE_FOUR   ST  R2 LOCATION2    ; routine for 4 values
+            ST  R3 LOCATION3
+            ST  R6 LOCATION4
+            LEA R0 LOCATION1
+            LD  R5 POINTER
+PUSHING ADD R5 R5 #-1           
+        LDR R4 R0 #0
+        STR R4 R5 #0            ; push approptiate quantity of values to the stack
+        ADD R0 R0 #1
+        ADD R1 R1 #-1
+        BRp PUSHING
+        ST  R5 POINTER                  ; save new top
+        LD  R0 NUMBER_OF_ELEMENTS
+        LD  R1 NUMBER_OF_LOCATIONS
+        LEA R5 NUMBER_OF_LOC_IN_EL_1    
+        ADD R5 R5 R0
+        STR R1 R5 #0                    ; save the number of values in the current element
+        ADD R0 R0 #1
+        ST  R0 NUMBER_OF_ELEMENTS       ; save new number of elements
+        
+success_exit    LD  R4 Save2
+                LD  R0 Save1   
+                AND R5 R5 #0    ; R5 <--success
                 RET
-                ;
-fail_exit       LD      R2,Save2 ; Restore original
-                LD      R1,Save1 ; register values
-                LD      R3,Save3
-                ADD     R5,R5,#1 ; R5 <-- failure
-                RET
-                ;
-BASE            .FILL   xC006   ; Start address of stack
-COUNT           .FILL	xC007   ; Element count of stack at the moment
-CAPACITY        .FILL   xC008   ; Negative stack capacity
-Save1           .FILL   x0000
-Save2           .FILL   x0000
-Save3           .FILL   x0000
+                
+fail_exit   LD  R4 Save2
+            LD  R0 Save1   
+            ADD R5 R5 #1  ; R5 <--failure
+            RET
+fail_exit2  LD  R4 Save1
+            ADD R5 R5 #1  ; R5 <--failure
+            RET            
+
+NUMBER_OF_LOCATIONS .FILL x0000     ; number of locations we want to PUSH
+NUMBER_OF_ELEMENTS  .FILL x0000     ; current number of elements in the stack (5 is full)
+LOCATION1           .FILL x0000     ; this block is needed for PUSH
+LOCATION2           .FILL x0000
+LOCATION3           .FILL x0000
+LOCATION4           .FILL x0000
+POINTER             .FILL x4000
+NUMBER_OF_LOC_IN_EL_1     .FILL x0000   ; this block counts number of values in each stack element
+NUMBER_OF_LOC_IN_EL_2     .FILL x0000
+NUMBER_OF_LOC_IN_EL_3     .FILL x0000
+NUMBER_OF_LOC_IN_EL_4     .FILL x0000
+NUMBER_OF_LOC_IN_EL_5     .FILL x0000
+Save1   .FILL x0000
+Save2   .FILL x0000
+.END
 ```
 
 ---
