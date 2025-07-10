@@ -376,6 +376,7 @@ Save2   .FILL x0000
    1. BDECJKIHLG
    2. PUSH Z, PUSH Y, POP, PUSH X, POP, PUSH W, PUSH V, POP, PUSH U, POP, POP, POP, PUSH T, PUSH S, POP, PUSH R, POP, POP
    3. Number of valid output permutations is determined by the Catalan number for the given input length. The Catalan number 5 is 14.
+      - ZYXW, ZWXY, ZXYW, ZYWX, ZXWY, YXWZ, YZXW, YZWX, YXZW, YWXZ, XWYZ, XYZW, XYWZ, WXYZ
 ---
 10. I couldn't understand how this question works.
 ---
