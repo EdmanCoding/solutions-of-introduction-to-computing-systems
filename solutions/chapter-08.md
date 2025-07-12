@@ -378,7 +378,8 @@ Save2   .FILL x0000
    3. Number of valid output permutations is determined by the Catalan number for the given input length. The Catalan number 5 is 14.
       - ZYXW, ZWXY, ZXYW, ZYWX, ZXWY, YXWZ, YZXW, YZWX, YXZW, YWXZ, XWYZ, XYZW, XYWZ, WXYZ
 ---
-10. I couldn't understand how this question works.
+10. Solution:
+    [Solution](_attachments/8.10%20.png)
 ---
 11. Solution:
     1. 16.
