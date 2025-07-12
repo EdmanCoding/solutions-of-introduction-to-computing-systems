@@ -387,7 +387,7 @@ Save2   .FILL x0000
     3. Average of 4 consecutive values in memory.
 ---
 12. Solution:
-    ```assembly
+```assembly
      ;You can verify this code in LC3Tools
  .ORIG x3000
     LEA R0, FROM
@@ -524,7 +524,7 @@ E_bridges   .ORIG x3510
             .ORIG x3530
                 .FILL x0044     ;bridge with D
             .END
-    ```
+```
 ---
 13. Solution:
 
