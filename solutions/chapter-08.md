@@ -379,7 +379,7 @@ Save2   .FILL x0000
       - ZYXW, ZWXY, ZXYW, ZYWX, ZXWY, YXWZ, YZXW, YZWX, YXZW, YWXZ, XWYZ, XYZW, XYWZ, WXYZ
 ---
 10. Solution:
-    [Solution](_attachments/8.10%20.png)
+    ![Solution](_attachments/8.10%20.png)
 ---
 11. Solution:
     1. 16.
