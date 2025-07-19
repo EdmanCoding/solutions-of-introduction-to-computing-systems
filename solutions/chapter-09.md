@@ -25,17 +25,25 @@
 8. Solution:
 
 ```assembly
-        LDR     R0, MEMADDR, #0
-        LDI     R1, MASK
-        AND	R2, R0, R1
-        BRnp    INVALID
-        ADD     R3, R0 #-32
-        BRnz    INVALID
-        TRAP    x25
-INVALID TRAP	HALT
+         .Orig x4000
+VALUE       .FILL x0021      
+        LD  R0 VALUE
+        LD  R2 NEG_MASK
+        AND R2 R0 R2    ; is it negative?
+        BRn EXIT        
+        LD  R2 VALID_SYMB
+        ADD R2 R0 R2    ; is ASCII code a symbol?
+        BRnz EXIT       
+        LD  R2 CHECK
+        ADD R2 R0 R2    ; is it higher than x7F?
+        BRp EXIT        
+        TRAP x21        ; print the value
+EXIT    HALT
 
-MEMADDR         .FILL   x4000
-MASK            .FILL   xFF00
+CHECK       .FILL xFF82     ;negative x007E
+VALID_SYMB  .FILL xFFE0     ;-32
+NEG_MASK    .FILL x8000     ;negative mask
+    .END
 ```
 
 ---
