@@ -104,27 +104,29 @@ KBDSR .FILL     xFE00       ; Address of KBDSR
 19. FUN.
 ---
 20. Solution:
-
 ```assembly
-        .ORIG   x3000
-        LD      R2,UPSTART ; Load uppercase start
-        LD      R3,ASCII ; Load ASCII difference
-        LD      R4,ALPCOUNT ; Load negative alphabet character count
-AGAIN   TRAP    x23 ; Request keyboard input
-        ADD     R1,R2,R0 ; Test for uppercase start
-        BRn     EXIT ; character
-        ADD     R1,R1,R4 ; Subtract alphabet character count
-        BRp     EXIT ; If larger than alphabet character
-        ADD     R0,R0,R3 ; Change to lowercase
-        TRAP    x21 ; Output to the monitor
-        BRnzp   AGAIN ; ... and do it again!
-UPSTART .FILL   xFFBF ; FFBF is negative of ASCII 41
-ALPCOUNT.FILL   xFFE5 ; FFE5 is negative of ASCII 25
-ASCII   .FILL   x0020
-EXIT    TRAP    x25 ; Halt
-        .END
+   .ORIG x3000
+        LD R2, TERM     ;Load -7
+        LD R3, ASCII    ;Load ASCII difference
+AGAIN   TRAP x23        ;Request keyboard input
+        ADD R1, R2, R0  ;Test for terminating
+        BRz EXIT        ;character
+        LD  R2 LOWEST
+        ADD R1 R2 R0    ;test: is it lower than ASCII 'A'?
+        BRn EXIT
+        LD  R2 HIGHEST
+        ADD R1 R2 R0    ;test: is it higher than ASCII 'Z'?
+        BRp EXIT
+        ADD R0, R0, R3  ;Change to lowercase
+        TRAP x21        ;Output to the monitor
+        BRnzp AGAIN     ;...and do it again!
+TERM    .FILL xFFC9     ;FFC9 is negative of ASCII 7
+ASCII   .FILL x0020
+LOWEST  .FILL xFFBF     ;negative for ASCII 'A'
+HIGHEST .FILL xFFA6     ;negative for ASCII 'Z'
+EXIT    TRAP x25        ;Halt
+.END
 ```
-
 ---
 22. Solution:
     1. a.
