@@ -74,19 +74,19 @@ KBDSR .FILL     xFE00       ; Address of KBDSR
 16. Solution:
     1.  256. Because LC-3 uses 8 bits trap vector for reaching addresses of service routines and, we can address 256 distinct service routine for 8 bits.
     2.  Because RET instructions pops two values on system stack and, one of the values holds the PC containing the following address of the TRAP instruction and using this PC the processor returns to where it needs to continue. TRAP instructions stores at start of the memory, so the distance between TRAP instructions and where TRAP instruction executed may exceed the range of BR instruction. BR instruction doesn't do the work with the stacks and the PSR. 
-    3. Access #1: Read the Trap Vector Table Entry
-          The TRAP instruction includes an 8-bit trap vector (e.g., TRAP x21 for PUTS).
-          The CPU calculates the address of the trap vector table entry:
-             Example: For TRAP x21 (PUTS), the CPU reads Memory[0x0042] to fetch the address of the trap service routine (TSR).
-       Access #2: Push PC (Program Counter) to the Stack
-          The current PC (address of the next instruction) is saved to the stack (R6).
-       Access #3: Push PSR (Processor Status Register) to the Stack (if in supervisor mode)
-       Access #4: Fetch the First Instruction of the Trap Routine
-       Access #5: Optional (If the TSR Itself Accesses Memory)
-         Many trap routines (e.g., PUTS, OUT) immediately read/write memory.
-            Example: PUTS reads Memory[R0] to output a string.
-       Access #6: Pop PSR (restore processor state)
-       Access #7: Pop PC (resume user program)
+    3. -Access #1: Read the Trap Vector Table Entry
+          -The TRAP instruction includes an 8-bit trap vector (e.g., TRAP x21 for PUTS).
+          -The CPU calculates the address of the trap vector table entry:
+             -Example: For TRAP x21 (PUTS), the CPU reads Memory[0x0042] to fetch the address of the trap service routine (TSR).
+       -Access #2: Push PC (Program Counter) to the Stack
+          -The current PC (address of the next instruction) is saved to the stack (R6).
+       -Access #3: Push PSR (Processor Status Register) to the Stack (if in supervisor mode)
+       -Access #4: Fetch the First Instruction of the Trap Routine
+       -Access #5: Optional (If the TSR Itself Accesses Memory)
+         -Many trap routines (e.g., PUTS, OUT) immediately read/write memory.
+            -Example: PUTS reads Memory[R0] to output a string.
+       -Access #6: Pop PSR (restore processor state)
+       -Access #7: Pop PC (resume user program)
 ---
 17. Solution:
     1.  Only an external mechanism can start the clock after the machine is HALTed.
