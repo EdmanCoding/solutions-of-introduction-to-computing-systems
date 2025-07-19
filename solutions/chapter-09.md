@@ -96,10 +96,10 @@ KBDSR .FILL     xFE00       ; Address of KBDSR
     4.  It'll return where HALT instruction executed and continue from following instruction.
 ---
 18. Solution:
-    1.  1111 0000 0010 0001
-    2.  0011 0010 0000 0111
-    3.  1100 0001 1100 0000
-    4.  HookemHorns
+    a.  1111 0000 0010 0001
+    b.  x3006
+    c.  x3005 (TRAP x21) or x030D (RTI from TRAP x21)
+    d.  HookemHorns
 ---
 19. FUN.
 ---
