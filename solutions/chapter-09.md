@@ -56,13 +56,12 @@ NEG_MASK    .FILL x8000     ;negative mask
 12. Solution:
 
 ```assembly
-START   LDI     R1, KBDR ; Test for
-        BRz     START ; character input
-        LDI     R0, KBDR
+START   LDI     R0, KBDSR   ;Test for
+        BRz     START       ;character input
         AND     R1, R1, #0
-        STI     R1, KBDR
-        BRnzp   NEXT_TASK ; Go to the next task
-KBDR    .FILL   xFE02 ; Address of KBDR
+        STI     R1, KBDSR
+        BRnzp   NEXT_TASK   ;Go to the next task
+KBDSR .FILL     xFE00       ; Address of KBDSR
 ```
 
 ---
