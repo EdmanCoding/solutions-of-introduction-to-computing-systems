@@ -128,6 +128,8 @@ EXIT    TRAP x25        ;Halt
 .END
 ```
 ---
+21. If the value in A is a prime number, 1 is stored in memory location RESULT; otherwise, 0 is stored in RESULT.
+---
 22. Solution:
     1. a.
 
