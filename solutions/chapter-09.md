@@ -258,7 +258,6 @@ BUFFER  .BLKW 1001      ; Now LEA can reach S_CHAR
 ---
 29. Solution:
     1.  Assembler can't put x30000 instead of VALUE, it exceeds memory bits limit of LC-3, so it'll be detected in assembly time.
-    2.  R0 isn't reset by AND operation in SQRT, so each operation can return by adding the result with the previous value.
 ---
 30. Solution:
     1.  ADD R1, R1, #1
