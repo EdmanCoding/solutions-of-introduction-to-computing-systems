@@ -355,6 +355,8 @@ MASK1  .FILL x0001
    - (c)  The digit 2 some number of times, followed by the digit typed twice or three times, followed by the digit 2 continually thereafter.
    - (d)  The digit typed will be displayed to the screen twice or three times, depending on when the typed character interrupted the program. If the program was interrupted immediately after LD R0, B , the character typed would appear on the screen three times
 ---
+34. The program prints the uppercase letters "ABCDEFGHI" (9 characters) to the console.
+---
 39. Solution:
 
 ```assembly
