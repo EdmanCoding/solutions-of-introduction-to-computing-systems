@@ -295,7 +295,36 @@ HELLO       .STRINGZ "Hello, "
     3.  Couple of times '2' printed and then struck key printed and then continue to print '2'.
     4.  Because IE bit is set to 1 and this makes getting new input inconsistent between two input.
 ---
-32. I don't want to show any example but, when processor returned an interrupt routine and following instruction is BR and if condition codes didn't save, program may continue incorrectly.
+32. Solution:
+```
+        LDI R1, INTCTL
+DEV0    LD  R2, MASK1
+        AND R2, R2, R1
+        BRnz DEV1
+        JSR HARDDISK
+        RTI
+ 
+DEV1    LD  R2, MASK2
+        AND R2, R2, R1
+        BRnz DEV2
+        JSR ETHERNET
+        RTI
+ 
+DEV2    LD  R2, MASK4
+        AND R2, R2, R1
+        BRnz DEV3
+        JSR PRINTER
+        RTI
+ 
+DEV3    JSR CDROM
+        RTI
+ 
+INTCTL .FILL xFF00
+MASK8  .FILL x0008
+MASK4  .FILL x0004
+MASK2  .FILL x0002
+MASK1  .FILL x0001
+```
 ---
 33. Solution:
 
