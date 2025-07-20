@@ -260,10 +260,34 @@ BUFFER  .BLKW 1001      ; Now LEA can reach S_CHAR
     1.  Assembler can't put x30000 instead of VALUE, it exceeds memory bits limit of LC-3, so it'll be detected in assembly time.
 ---
 30. Solution:
-    1.  ADD R1, R1, #1
-    2.  Can't solve.
-    3.  Can't solve.
-    4.  BRzp K
+```assembly
+    .ORIG x3000
+        LEA R1, HELLO
+AGAIN   LDR R2, R1, #0
+        BRz NEXT
+        ADD R1, R1, #1
+        BR  AGAIN
+NEXT    LEA R0, PROMPT
+        TRAP x22            ; PUTS
+        LD  R3 NEGENTER     ; (a)
+AGAIN2  TRAP x20            ; GETC
+        TRAP x21            ; OUT
+        ADD R2, R0, R3
+        BRz CONT
+        STR R0 R1 #0        ; (b)
+        ADD R1 R1 #1        ; (c)
+        BR AGAIN2
+CONT    AND R2, R2, #0
+        STR R2 R1 #0        ; (d)
+        LEA R0, HELLO
+        TRAP x22            ; PUTS
+        TRAP x25            ; HALT
+NEGENTER    .FILL xFFF6     ;-x0A
+PROMPT      .STRINGZ "Please enter your name: "
+HELLO       .STRINGZ "Hello, "
+            .BLKW #25
+    .END
+```
 ---
 31. Solution:
     1.  It is set the interrupt enable (IE) bit to 1 and '2' is repeatedly printed to screen.
