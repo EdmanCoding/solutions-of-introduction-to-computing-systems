@@ -131,8 +131,6 @@ EXIT    TRAP x25        ;Halt
 21. If the value in A is a prime number, 1 is stored in memory location RESULT; otherwise, 0 is stored in RESULT.
 ---
 22. Solution:
-    1. a.
-
 ```assembly
     .ORIG x3F50
 ;All functions return results via R0.
@@ -146,7 +144,7 @@ EXIT    TRAP x25        ;Halt
             JSR NOT_BUSY_M
             HALT
             
-NONE_BUSY   LD  R1 MACHINES
+NONE_BUSY   LD  R1 MACHINES      ; a.
             AND R2 R2 #0
             AND R0 R0 #0
             ADD R2 R2 #1
@@ -160,7 +158,7 @@ L1          AND R4 R1 R2
             RET 
 SOME_IS_BUSY    RET
 
-ALL_BUSY    LD  R1 MACHINES
+ALL_BUSY    LD  R1 MACHINES      ; b.
             AND R2 R2 #0
             AND R0 R0 #0
             ADD R2 R2 #1
@@ -174,7 +172,7 @@ L2          AND R4 R1 R2
             RET
 SOME_IS_FREE    RET
 
-BUSY_MACHINES   LD  R1 MACHINES
+BUSY_MACHINES   LD  R1 MACHINES   ; c.
                 AND R2 R2 #0
                 AND R0 R0 #0
                 ADD R2 R2 #1
@@ -187,7 +185,7 @@ SKIP            ADD R2 R2 R2
                 BRzp L3
                 RET             ;R0 contains the number of busy machines
                 
-FREE_MACHINES   LD  R1 MACHINES
+FREE_MACHINES   LD  R1 MACHINES   ; d.
                 AND R2 R2 #0
                 AND R0 R0 #0
                 ADD R2 R2 #1
@@ -200,7 +198,7 @@ SKIP2           ADD R2 R2 R2
                 BRzp L4
                 RET             ;R0 contains the number of free machines
                 
-IS_BUSY         LD  R1 MACHINES
+IS_BUSY         LD  R1 MACHINES   ; e.
                 AND R2 R2 #0
                 AND R0 R0 #0
                 ADD R2 R2 #1
@@ -214,7 +212,7 @@ CHECK           AND R4 R1 R2
                 ADD R0 R0 #1
 RETURN1         RET             ;R0 set to 1 if machine R5 is busy
                 
-NOT_BUSY_M  LD  R1 MACHINES
+NOT_BUSY_M  LD  R1 MACHINES     ; f.
             AND R2 R2 #0
             AND R0 R0 #0
             ADD R2 R2 #1
