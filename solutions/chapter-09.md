@@ -290,10 +290,33 @@ HELLO       .STRINGZ "Hello, "
 ```
 ---
 31. Solution:
-    1.  It is set the interrupt enable (IE) bit to 1 and '2' is repeatedly printed to screen.
-    2.  Input echoed 2 times to screen.
-    3.  Couple of times '2' printed and then struck key printed and then continue to print '2'.
-    4.  Because IE bit is set to 1 and this makes getting new input inconsistent between two input.
+```assembly
+    .ORIG x3000
+        LEA R1, TESTOUT
+BACK_1  LDR R0, R1, #0
+        BRz NEXT_1
+        TRAP x21
+        ADD R1 R1 #1    ; (a)
+        BRnzp BACK_1
+
+NEXT_1  LEA R1, TESTOUT
+BACK_2  LDR R0, R1, #0
+        BRz NEXT_2
+        JSR SUB_1
+        ADD R1, R1, #1
+        BRnzp BACK_2
+NEXT_2  TRAP x25        ; (b)
+SUB_1   ADD R0 R0 #5    ; (c)
+K       LDI R2, DSR
+        BRz K           ; (d)
+        STI R0, DDR
+        RET
+ 
+DSR     .FILL xFE04
+DDR     .FILL xFE06
+TESTOUT .STRINGZ "ABC"
+ .END
+```
 ---
 32. Solution:
 ```
