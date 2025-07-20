@@ -357,6 +357,25 @@ MASK1  .FILL x0001
 ---
 34. The program prints the uppercase letters "ABCDEFGHI" (9 characters) to the console.
 ---
+35.
+```assembly
+    .ORIG x3000
+        LD  R0,ASCII
+        LD  R1,NEG
+AGAIN   LDI R2,DSR
+        BRzp AGAIN
+        STI R0,DDR
+        ADD R0,R0,#1
+        ADD R2,R0,R1
+        BRnp AGAIN
+        HALT
+ASCII   .FILL x0041
+NEG     .FILL xFFB6 ;-x004A
+DSR     .FILL xFE04
+DDR     .FILL xFE06
+    .END
+```
+If the N/Z/P condition codes aren’t saved during an interrupt, the program may fail. For example, this program prints "ABCDEFGHI" by checking BRnp after each character. If interrupted after printing 'D' (where ADD R2,R0,R1 sets Z=0), and the interrupt service routine corrupts Z=1, the BRnp will incorrectly skip the branch and halt early—printing only "ABCD" instead of all 9 characters. Saving N/Z/P prevents this by preserving the program’s state across interrupts.
 39. Solution:
 
 ```assembly
