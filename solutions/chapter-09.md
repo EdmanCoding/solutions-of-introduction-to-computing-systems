@@ -350,16 +350,10 @@ MASK1  .FILL x0001
 ```
 ---
 33. Solution:
-
-```
-|   x6311               |
-|   PSR for device C    |
-|   x6203               |
-|   PSR for device B    |
-|   x3007               |
-|   PSR of program A    |
-|   ////////////////    |
-```
+   - (a)  The keyboard interrupt is enabled, and the digit 2 is repeatedly written to the screen.
+   - (b)  The character typed is echoed twice to the screen.
+   - (c)  The digit 2 some number of times, followed by the digit typed twice or three times, followed by the digit 2 continually thereafter.
+   - (d)  The digit typed will be displayed to the screen twice or three times, depending on when the typed character interrupted the program. If the program was interrupted immediately after LD R0, B , the character typed would appear on the screen three times
 ---
 39. Solution:
 
