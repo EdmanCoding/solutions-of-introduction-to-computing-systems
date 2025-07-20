@@ -378,6 +378,8 @@ DDR     .FILL xFE06
 If the N/Z/P condition codes aren’t saved during an interrupt, the program may fail. For example, this program prints "ABCDEFGHI" by checking BRnp after each character. If interrupted after printing 'D' (where ADD R2,R0,R1 sets Z=0), and the interrupt service routine corrupts Z=1, the BRnp will incorrectly skip the branch and halt early—printing only "ABCD" instead of all 9 characters. Saving N/Z/P prevents this by preserving the program’s state across interrupts.
 
 ---
+36. This is two interrupt vectors (INTV). An eight-bit value, supplied along with an interrupting event; used to determine the starting address of an interrupt service routine. The eight bits form an offset from the starting address of the interrupt vector table. The corresponding location in the interrupt vector table contains the starting address of the corresponding interrupt service routine. Range 0..255.
+---
 39. Solution:
 
 ```assembly
