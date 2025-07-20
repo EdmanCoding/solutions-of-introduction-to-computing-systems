@@ -236,7 +236,7 @@ MACHINES    .FILL xFFDF     ;adjust the bit pattern you want to check
 23. Solution:
     1.  We can use 256 bit memory addresses for TRAP instructions. In total, if each instruction will use at most 16 bit addresses, we can have at most 16 trap instructions in total. In this case we can reduce the trap vector from 8 bits to 4 bits. By shifting the trap vector 4 bits to the left we can find the starting address of the routine of each instruction.
 ---
-24. Problem with **LEA R6, S_CHAR** in LC-3 Code
+24. Problem with **LEA R6, S_CHAR** 
    - The line LEA R6, S_CHAR will fail to assemble if the buffer is larger than 256 characters. This happens because:
       - LEA uses a 9-bit signed PC-relative offset (max range: -256 to +255).
       - BUFFER .BLKW 1001 pushes S_CHAR too far away, making the offset unreachable.
