@@ -384,6 +384,10 @@ If the N/Z/P condition codes aren’t saved during an interrupt, the program may
 ![Solution](_attachments/ex.9.37.png)
 ![Solution](_attachments/ex.9.37%20second.png)
 ---
+38. Solution:
+![Solution](_attachments/9.38.png)
+![Solution](_attachments/9.38%20second.png)
+---
 39. Solution:
 
 ```assembly
