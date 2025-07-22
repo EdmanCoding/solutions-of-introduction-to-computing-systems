@@ -380,6 +380,10 @@ If the N/Z/P condition codes aren’t saved during an interrupt, the program may
 ---
 36. These are two interrupt vectors (INTV). An eight-bit value, supplied along with an interrupting event; used to determine the starting address of an interrupt service routine. The eight bits form an offset from the starting address of the interrupt vector table. The corresponding location in the interrupt vector table contains the starting address of the corresponding interrupt service routine. Range 0..255.
 ---
+37. Solution:
+![Solution](_attachments/ex.9.37.png)
+![Solution](_attachments/ex.9.37%20second.png)
+---
 39. Solution:
 
 ```assembly
