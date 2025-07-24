@@ -414,6 +414,61 @@ KBDR        .FILL xFE02
 BUFFER .BLKW 255
 .END
 ```
+40. Solution:
+```assembly
+.ORIG x3FA0
+        LDI R2 POINTER
+        LD  R3 FULL_BUF
+        ADD R1 R2 R3
+        BRz FULL
+        LDI R1 KBDR
+        STR R1 R2 #0
+        LD  R3 NEG_START        
+        ADD R1 R2 R3
+        BRz START_LOC           ;we shouldn't increment x40FE if Buffer is empty
+        ADD R2 R2 #1
+        STI R2 POINTER
+        LDI R1 OLDEST
+        ADD R1 R1 #1
+        STI R1 OLDEST
+        LDI R1 NUMBER_OF_CHARS
+        ADD R1 R1 #1
+        STI R1 NUMBER_OF_CHARS
+        RTI
+START_LOC   ADD R2 R2 #1
+            STI R2 POINTER
+            LDI R1 NUMBER_OF_CHARS
+            ADD R1 R1 #1
+            STI R1 NUMBER_OF_CHARS
+            RTI
+FULL    LDI R2 START
+        BRnp START_FILLED               ;is x4000 filled after the buffer is full?
+        LDI R1 KBDR                     ;if no, fill it with new character 
+        STR R1 R2 #0
+        LDI R1 OLDEST
+        ADD R1 R2 #0
+        STI R1 OLDEST
+        LDI R1 NUMBER_OF_CHARS
+        ADD R1 R1 #1
+        STI R1 NUMBER_OF_CHARS
+        RTI
+START_FILLED        LEA R0 FULL_STR
+                    PUTS
+                    RTI
+
+FULL_STR    .STRINGZ    "Character cannot be accepted; input buffer full."  
+KBDR        .FILL xFE02
+FULL_BUF    .FILL xBF03     ; negative x40FD
+OLDEST      .FILL x40FE
+POINTER     .FILL x40FF
+START       .FILL x4000
+NEG_START   .FILL xB001     ; negative x4000
+NUMBER_OF_CHARS .FILL x40FD
+.END
+.ORIG x4000
+BUFFER .BLKW 255
+.END
+```
 ---
 41. If an interrupt routine occurs and at the beginning of the interrupt, the routine saves the number of characters in the buffer, x40FD, so as not to lose it, and also uses this buffer and at the end of the interrupt reloads the first saved value of x40FD, the wrong value will be loaded.
 ---
