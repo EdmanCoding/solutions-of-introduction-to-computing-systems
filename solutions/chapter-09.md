@@ -389,30 +389,31 @@ If the N/Z/P condition codes aren’t saved during an interrupt, the program may
 ![Solution](_attachments/9.38%20second.png)
 ---
 39. Solution:
-
 ```assembly
-            .ORIG	x3000
-            LDI     R1, BUFFPOINT
-            LD      R2, BUFFEND
-            ADD     R3, R1, R2
-            BRp     BUFFERFULL
-            LDI     R0, KBDR
-            STR     R0, BUFFPOINT
-            ADD     R1, R1, #1
-            ST      R1, BUFFPOINT
-            BRnzp   DONE
-BUFFERFULL  LEA	    R0,	FULLPROMPT
-            TRAP    x22
-            BRnzp   DONE
-DONE        RTI
-BUFFSTART   .FILL   x4000
-BUFFEND     .FILL   x-40FE
-BUFFPOINT   .FILL   x40FF
-KBDR        .FILL	xFE02
-FULLPROMPT  .STRINGZ "Character cannot be accepted; input buffer full."
+.ORIG x3FA0
+        LDI R2 POINTER
+        LD  R3 FULL_BUF
+        ADD R1 R2 R3
+        BRz FULL
+        LDI R1 KBDR
+        STR R1 R2 #0
+        ADD R2 R2 #1
+        STI R2 POINTER
+        RTI
+FULL    LEA R0 FULL_STR
+        PUTS
+        RTI
+
+        
+FULL_STR    .STRINGZ    "Character cannot be accepted; input buffer full."        
+FULL_BUF    .FILL xBF01     ; negative 40FF
+POINTER     .FILL x40FF
+KBDR        .FILL xFE02
+.END
+.ORIG x4000
+BUFFER .BLKW 255
 .END
 ```
-
 ---
 41. If an interrupt routine occurs and at the beginning of the interrupt, the routine saves the number of characters in the buffer, x40FD, so as not to lose it, and also uses this buffer and at the end of the interrupt reloads the first saved value of x40FD, the wrong value will be loaded.
 ---
