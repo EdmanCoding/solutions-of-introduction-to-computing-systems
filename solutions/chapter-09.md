@@ -536,12 +536,26 @@ If a user types the string `Please help!` followed by the Enter key:
 - **Result**: The program **will crash** when it attempts to restore `R7`.
 ---
 45. Solution:
-    1.  LEA R0, INPUT
-    2.  ADD R6, R6, R0
-    3.  LDR R0, R6, #2
-    4.  S0
-    5.  S1
-    6.  x0063
+```assembly
+.ORIG X3000
+        LD  R0, KBDR1
+POLL    LDI R1, KBSR
+        BRz POLL
+        AND R2, R2, #0
+        ADD R2, R2, #2
+AGAIN   AND R3, R1, R2  ;(a)
+        BRnp FOUND
+        ADD R0, R0, #2
+        ADD R2, R2, R2  ;(b)
+        ADD R2, R2, R2  ;(c)
+        BRnp AGAIN
+        HALT
+FOUND   LDR R0, R0, #0  ;(d)
+        HALT
+KBSR    .FILL xFE04
+KBDR1   .FILL xFE06
+ .END
+```
 ---
 46. Solution:
     1.  Mem Addr: x0050 and x0060. Content: x1000 and x2000
