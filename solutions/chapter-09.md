@@ -583,3 +583,43 @@ SaveR0  .BLKW 1         ;(e)
 ```
 ---
 48. "**Cat**" will appear on the screen.
+---
+49. Solution:
+```assembly
+ .ORIG x3000
+        LEA R6, S0
+Loop    LEA R0, INPUT       ;(a)
+        TRAP x22
+        TRAP x20            ; inputs a character
+        TRAP x21
+        
+        LD  R1, NEGASCII
+        ADD R0, R0, R1
+        ADD R6, R6, R0      ;(b)
+        LDR R6, R6, #0
+        LD  R0, NEWLINE
+        TRAP x21
+        LEA R0, OUTPUT
+        TRAP x22
+        LDR R0, R6, #2      ;(c)
+        TRAP x21
+        LD  R0, NEWLINE
+        TRAP x21
+        BRnzp LOOP    
+        
+S0  .FILL S2
+    .FILL S1
+    .FILL x0061
+S1  .FILL S0
+    .FILL S2
+    .FILL x0062
+S2  .FILL S0        ;(d)
+    .FILL S1        ;(e)
+    .FILL x0063     ;(f)
+    
+NEGASCII    .FILL xFFD0             ; the value -48
+OUTPUT      .STRINGZ "OUTPUT:"
+INPUT       .STRINGZ "INPUT(either 0 or 1):"
+NEWLINE     .FILL x000A
+ .END
+```
