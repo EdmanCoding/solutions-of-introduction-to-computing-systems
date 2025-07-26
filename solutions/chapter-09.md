@@ -557,5 +557,9 @@ KBDR1   .FILL xFE06
  .END
 ```
 ---
-46. Solution:
-    1.  Mem Addr: x0050 and x0060. Content: x1000 and x2000
+46. Solution: 
+  - Prints `abc` followed by `cba` (reversed) on a new line;   
+  - Prints `abcdefgh` but **crashes** due to buffer overflow:  
+    - `'f'` overwrites `DONE TRAP x25`;  
+    - `'g'` overwrites `BRnzp Y`;
+    - `'h'` overwrites `TRAP x21`.  
