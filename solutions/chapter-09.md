@@ -581,3 +581,5 @@ SaveR1  .BLKW 1
 SaveR0  .BLKW 1         ;(e)
 .END
 ```
+---
+48. **Cat** will appear on the screan.
