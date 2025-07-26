@@ -482,13 +482,58 @@ BUFFER .BLKW 255
     3.  ADD R2, R2, R2
     4.  LDI R0, R0, #0
 ---
-44. Solution: (The statement of this problem is incorrect.)
-    1.  At the x009A: JSR #1FBB
-    2.  ST R0, SaveR0
-    3.  ADD R0, R1, R0
-    4.  LD R0, SaveR0
-    5.  .FILL xFFE0
-    6.  SaveR0
+44. Solution:
+```assembly
+.ORIG x7020
+PACK    ST R7, SAVER7
+        ST R6, SAVER6
+        ST R4, SAVER4
+        ST R3, SAVER3
+        LEA R6, A       ; R6 is the pointer
+        AND R4, R4, #0
+        ADD R4, R4, #8  ; R4 is our counter
+        AND R3, R3, #0
+        LEA R0, PROMPT
+        TRAP x22
+POLL    LDI R7, KBSR        ; (a)
+        BRzp POLL
+        LDI R7, KBDR        ; (b)
+        LD  R0, NEG_LF
+        ADD R0, R7, R0
+        BRz DONE            ; (c)
+        ADD R4, R4, #0
+        BRz NOSHIFT
+SHIFT   ADD R7, R7, R7
+        ADD R4, R4, #-1
+        BRp SHIFT
+        ADD R3, R7, #0
+        BRnzp POLL
+NOSHIFT ADD R3, R3, R7
+        STR R3, R6, #0      ; (d)
+        ADD R6, R6, #1
+        ADD R4, R4, #8
+        BRnzp POLL
+DONE    LD R7, SAVER7
+        LD R6, SAVER6
+        LD R4, SAVER4
+        LD R3, SAVER3
+        LEA R0, A       ; Returns a pointer to the characters
+        RET
+KBSR    .FILL xFE00
+KBDR    .FILL xFE02
+NEG_LF  .FILL xFFF6 
+PROMPT  .STRINGZ "Please enter a string: "
+A       .BLKW #5
+SAVER7  .BLKW #1
+SAVER6  .BLKW #1
+SAVER4  .BLKW #1
+SAVER3  .BLKW #1
+ .END
+```
+If a user types the string `Please help!` followed by the Enter key:  
+- `"Please hel"` **will be written** to the 5 memory locations under label `A`.  
+- The remaining `"p!"` **will overflow** into `SAVER7`, corrupting the saved return address (`PC`).  
+- **Result**: The program **will crash** when it attempts to restore `R7`.
 ---
 45. Solution:
     1.  LEA R0, INPUT
