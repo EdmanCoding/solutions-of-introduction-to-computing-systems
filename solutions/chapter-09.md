@@ -470,7 +470,7 @@ BUFFER .BLKW 255
 .END
 ```
 ---
-41. If an interrupt routine occurs and at the beginning of the interrupt, the routine saves the number of characters in the buffer, x40FD, so as not to lose it, and also uses this buffer and at the end of the interrupt reloads the first saved value of x40FD, the wrong value will be loaded.
+41. The variable “number of characters in the buffer” is shared between both the interrupt handler which is adding numbers to the buffer and the program that is removing characters. So now if the program has just loaded the number of characters in the buffers value into a register when an interrupt occurs, the value in the register is going to be stale after the interrupt is serviced. Hence when the program writes this value back to x40FD, it is writing a wrong value.
 ---
 42. Solution:
     1.  Processor may not work from where the interrupt service call occurs due to not getting PC from supervisor stack.
