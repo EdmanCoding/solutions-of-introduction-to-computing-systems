@@ -472,9 +472,9 @@ BUFFER .BLKW 255
 ---
 41. The variable “number of characters in the buffer” is shared between both the interrupt handler which is adding numbers to the buffer and the program that is removing characters. So now if the program has just loaded the number of characters in the buffers value into a register when an interrupt occurs, the value in the register is going to be stale after the interrupt is serviced. Hence when the program writes this value back to x40FD, it is writing a wrong value.
 ---
-42. Solution:
-    1.  Processor may not work from where the interrupt service call occurs due to not getting PC from supervisor stack.
-    2.  Also, if there is a BR instruction at the point where the interrupt service call occurs, it cannot keep the correct condition codes because it has not received a PSR.
+42. We can infer the following:
+   - Memory location x0034 contains x1000
+   - Memory Locations x1000 onward hold the ISR (Interrupt Service Routine) code
 ---
 43. Solution:
     1.  AND R2, R2, R1
