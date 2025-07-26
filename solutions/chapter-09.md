@@ -473,14 +473,14 @@ BUFFER .BLKW 255
 41. The variable “number of characters in the buffer” is shared between both the interrupt handler which is adding numbers to the buffer and the program that is removing characters. So now if the program has just loaded the number of characters in the buffers value into a register when an interrupt occurs, the value in the register is going to be stale after the interrupt is serviced. Hence when the program writes this value back to x40FD, it is writing a wrong value.
 ---
 42. We can infer the following:
-   - Memory location x0034 contains x1000
-   - Memory Locations x1000 onward hold the ISR (Interrupt Service Routine) code
+   - Memory location x0034 contains x1000;
+   - Memory Locations x1000 onward hold the ISR (Interrupt Service Routine) code.
 ---
-43. Solution:
-    1.  AND R2, R2, R1
-    2.  ADD R2, R2, R2
-    3.  ADD R2, R2, R2
-    4.  LDI R0, R0, #0
+43. The three errors that arose in the ﬁrst student’s program are:
+  - The stack is left unbalanced;
+  - The privilege mode and condition codes are not restored;
+  - Since the value in R7 is used for the return address instead of the value that was saved on the stack, the program will most likely not return to the correct place.
+
 ---
 44. Solution:
 ```assembly
