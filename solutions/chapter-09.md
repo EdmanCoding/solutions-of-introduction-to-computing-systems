@@ -562,4 +562,22 @@ KBDR1   .FILL xFE06
   - Prints `abcdefgh` but **crashes** due to buffer overflow:  
     - `'f'` overwrites `DONE TRAP x25`;  
     - `'g'` overwrites `BRnzp Y`;
-    - `'h'` overwrites `TRAP x21`.  
+    - `'h'` overwrites `TRAP x21`.
+---
+47. Eccording to the errata:
+```assembly
+.ORIG x2055
+        ST R1, SaveR1
+        ST R0, SaveR0   ;(a)
+        TRAP x20
+        LD  R1, A
+        ADD R0, R0, R1  ;(b)
+        TRAP x21
+        LD R0, SaveR0   ;(c)
+        LD R1, SaveR1
+        RTI
+A       .FILL #-32      ;(d)
+SaveR1  .BLKW 1
+SaveR0  .BLKW 1         ;(e)
+.END
+```
