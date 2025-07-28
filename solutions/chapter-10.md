@@ -20,3 +20,39 @@ ASCIIoffset .FILL x0030
 .END
 ```
 ---
+3. Solution:
+```assembly
+.Orig x3000
+        TRAP x23
+        LD R2 MINUS_30
+        LD R3 IS_HEX
+        LD R5 HEX
+        LD R6 NEG_HEX
+        ADD R1 R0 R2
+        ADD R4 R1 R3
+        BRnz NEXT
+        ADD R1 R1 R6
+        
+NEXT    TRAP x23
+        ADD R0 R0 R2
+        ADD R4 R0 R3
+        BRnz NEXT2
+        ADD R0 R0 R6
+        
+NEXT2   ADD R0 R1 R0
+        ADD R4 R0 R3
+        BRnz NEXT3
+        ADD R0 R0 R5
+
+NEXT3   LD R2 ASCIIoffset
+        ADD R0 R0 R2
+        TRAP x21
+        TRAP x25
+
+MINUS_30    .FILL xFFD0 ; - x0030        
+ASCIIoffset .FILL x0030
+IS_HEX      .FILL xFFF7 ; -9
+HEX         .FILL #7
+NEG_HEX     .FILL #-7
+.END
+```
