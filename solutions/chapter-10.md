@@ -538,3 +538,72 @@ HEX         .FILL #7
 NEG_HEX     .FILL #-7
 .END
 ```
+4. Solution:
+```assembly
+;This approach allows us to easily scale to thousands, tens of thousands, etc.
+;However, the buffer in the main program must be adjusted accordingly
+ASCIItoBinary   ST  R1, AtoB_Save1
+                ST  R2, AtoB_Save2
+                ST  R3, AtoB_Save3
+                ST  R4, AtoB_Save4
+                ST  R5, AtoB_Save5
+                AND R0, R0,#0       ;R0 will be used for our result.
+                ADD R1, R1,#0       ;Test number of digits.
+                BRz AtoB_Done       ;There are n odigits, result is 0.
+
+                LD  R2, AtoB_ASCIIBUFF  ;R2 points to ASCIIBUFF
+                ADD R2, R2, R1
+                ADD R2, R2, #-1     ;R2 now points to "ones" digit.
+
+                LDR R4, R2, #0      ;R4 <-- "ones" digit
+                AND R4, R4, x000F   ;Strip off the ASCII template.
+                ADD R0, R0, R4      ;Add ones contribution.
+
+                ADD R1, R1, #-1
+                BRz AtoB_Done       ;The original number had one digit.
+                ADD R2, R2, #-1     ;R2 now points to "tens" digit.
+
+                LDR R4, R2, #0      ;R4 <-- "tens" digit
+                AND R3, R3, #0
+                AND R4, R4, x000F   ;Strip off ASCII template.
+                BRz AtoB_ZERO
+AtoB_AGAIN      ADD R3, R3, #10     
+                ADD R4, R4, #-1
+                BRz AtoB_ZERO
+                BR  AtoB_AGAIN
+AtoB_ZERO       ADD R0, R0, R3      ;Add tens contribution to total.
+
+                ADD R1, R1, #-1
+                BRz AtoB_Done       ;The original number had two digits.
+                ADD R2, R2, #-1     ;R2 nowpoints to "hundreds" digit.
+
+                LDR R4, R2, #0      ;R4 <-- "hundreds" digit
+                AND R3, R3, #0
+                AND R4, R4, x000F   ;Strip off ASCII template.
+                BRz AtoB_ZERO2
+                LD  R5, HUNDRED     
+AtoB_AGAIN2     ADD R3, R3, R5
+                ADD R4, R4, #-1     
+                BRz AtoB_ZERO2
+                BR  AtoB_AGAIN2
+                LDR R4, R3, #0
+AtoB_ZERO2      ADD R0, R0, R3      ;Add hundreds contribution to total.
+
+AtoB_Done       LD  R1, AtoB_Save1
+                LD  R2, AtoB_Save2
+                LD  R3, AtoB_Save3
+                LD  R4, AtoB_Save4
+                LD  R5, AtoB_Save5
+                RET
+
+AtoB_ASCIIBUFF  .FILL ASCIIBUFF
+AtoB_Save1      .BLKW #1
+AtoB_Save2      .BLKW #1
+AtoB_Save3      .BLKW #1
+AtoB_Save4      .BLKW #1
+AtoB_Save5      .BLKW #1
+HUNDRED   .FILL #100
+```
+**Integration Note**:  
+To test this, replace the current logic with the `ASCIItoBinary` subroutine in the main calculator program.  
+---
