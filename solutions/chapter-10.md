@@ -603,7 +603,6 @@ AtoB_Save3      .BLKW #1
 AtoB_Save4      .BLKW #1
 AtoB_Save5      .BLKW #1
 HUNDRED   .FILL #100
-```
-**Integration Note**:  
-To test this, replace the current logic with the `ASCIItoBinary` subroutine in the main calculator program.  
+``` 
+    To test this, replace the current logic with the `ASCIItoBinary` subroutine in the main calculator program.  
 ---
