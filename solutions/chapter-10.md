@@ -606,3 +606,140 @@ HUNDRED   .FILL #100
 ``` 
     To test this, replace the current logic with the `ASCIItoBinary` subroutine in the main calculator program.  
 ---
+5. Solution:
+```assembly
+;This approach allows us to easily scale to thousands, tens of thousands, etc.
+;However, the buffer in the main program must be adjusted accordingly
+;R1 doesn't include 'x'
+ASCIItoBinary   ST  R1, AtoB_Save1
+                ST  R2, AtoB_Save2
+                ST  R3, AtoB_Save3
+                ST  R4, AtoB_Save4
+                ST  R5, AtoB_Save5
+                AND R0, R0, #0      ;R0 will be used for our result.
+                ADD R1, R1, #0      ;Test number of digits.
+                BRz AtoB_Done       ;There are no digits, result is 0.
+
+                LD  R2, AtoB_ASCIIBUFF  ;R2 points to ASCIIBUFF
+                LDR R4, R2, #0
+                LD  R3, AtoB_x      
+                ADD R3, R4, R3      ;is value hexedecimal? 
+                BRz AtoB_HEX        
+                ADD R2, R2, R1
+                ADD R2, R2, #-1     ;R2 now points to "ones" digit.
+
+                LDR R4, R2, #0      ;R4 <-- "ones" digit
+                AND R4, R4, x000F   ;Strip off the ASCII template.
+                ADD R0, R0, R4      ;Add ones contribution.
+
+                ADD R1, R1, #-1
+                BRz AtoB_Done       ;The original number had one digit.
+                ADD R2, R2, #-1     ;R2 now points to "tens" digit.
+
+                LDR R4, R2, #0      ;R4 <-- "tens" digit
+                AND R3, R3, #0
+                AND R4, R4, x000F   ;Strip off ASCII template.
+                BRz AtoB_ZERO
+AtoB_AGAIN      ADD R3, R3, #10     
+                ADD R4, R4, #-1
+                BRz AtoB_ZERO
+                BR  AtoB_AGAIN
+AtoB_ZERO       ADD R0, R0, R3      ;Add tens contribution to total.
+
+                ADD R1, R1, #-1
+                BRz AtoB_Done       ;The original number had two digits.
+                ADD R2, R2, #-1     ;R2 nowpoints to "hundreds" digit.
+
+                LDR R4, R2, #0      ;R4 <-- "hundreds" digit
+                AND R3, R3, #0
+                AND R4, R4, x000F   ;Strip off ASCII template.
+                BRz AtoB_ZERO2
+                LD  R5, AtoB_HUNDRED     
+AtoB_AGAIN2     ADD R3, R3, R5
+                ADD R4, R4, #-1     
+                BRz AtoB_ZERO2
+                BR  AtoB_AGAIN2
+AtoB_ZERO2      ADD R0, R0, R3      ;Add hundreds contribution to total.
+                BR  AtoB_Done
+
+AtoB_HEX        ADD R2, R2, R1
+                ADD R2, R2, #-1     ;R2 now points to "ones" digit.
+                LDR R4, R2, #0      ;R4 <-- "ones" digit
+                LD  R3, AtoB_NegASCII9
+                ADD R3, R3, R4          ;is value from A to F?
+                BRp AtoB_HEX_LETTER
+                AND R4, R4, x000F   ;Strip off the ASCII template.
+                ADD R0, R0, R4      ;Add "hex ones" contribution.
+                BR  AtoB_HEX_TENS
+AtoB_HEX_LETTER LD  R3, AtoB_MINUS7     
+                LD  R5, AtoB_NegASCII0
+                ADD R4, R4, R3          ;the value is from A to F, subtract -7
+                ADD R4, R4, R5          ;extract hex value from ASCII
+                ADD R0, R0, R4          ;Add "hex ones" contribution.
+                
+AtoB_HEX_TENS   ADD R1, R1, #-1
+                BRz AtoB_Done       ;The original number had one digit.
+                ADD R2, R2, #-1     ;R2 now points to "tens" digit.
+                
+                LDR R4, R2, #0      ;R4 <-- "tens" digit
+                AND R3, R4, x000F   ;Strip off ASCII template.
+                BRz AtoB_ZERO3
+                LD  R3, AtoB_NegASCII9
+                ADD R3, R3, R4          ;is value from A to F?
+                BRnz AtoB_SKIP
+                LD  R3, AtoB_MINUS7     ;the value is from A to F, subtract -7
+                ADD R4, R4, R3
+AtoB_SKIP       LD  R3, AtoB_NegASCII0
+                ADD R4, R4, R3          ;extract hex value from ASCII
+                LD  R5, AtoB_HEX_TEN
+                AND R3, R3, #0
+AGAIN3          ADD R3, R3, R5
+                ADD R4, R4, #-1
+                BRz AtoB_ZERO3
+                BR  AGAIN3          ;loop until get required value of "hex tens"
+AtoB_ZERO3      ADD R0, R0, R3      ;Add "hex tens" contribution.
+
+AtoB_HEX_HUNDS  ADD R1, R1, #-1
+                BRz AtoB_Done       ;The original number had two digits.
+                ADD R2, R2, #-1     ;R2 now points to "hundreds" digit.
+                
+                LDR R4, R2, #0      ;R4 <-- "hundreds" digit
+                AND R3, R4, x000F   ;Strip off ASCII template.
+                BRz AtoB_ZERO4
+                LD  R3, AtoB_NegASCII9
+                ADD R3, R3, R4          ;is value from A to F?
+                BRnz AtoB_SKIP2         
+                LD  R3, AtoB_MINUS7     ;the value is from A to F, subtract -7
+                ADD R4, R4, R3
+AtoB_SKIP2      LD  R3, AtoB_NegASCII0  
+                ADD R4, R4, R3          ;extract hex value from ASCII
+                LD  R5, AtoB_HEX_HUND   
+                AND R3, R3, #0   
+AGAIN4          ADD R3, R3, R5
+                ADD R4, R4, #-1         
+                BRz AtoB_ZERO3
+                BR  AGAIN4          ;loop until get required value of "hex hundreds"
+AtoB_ZERO4      ADD R0, R0, R3      ;Add "hex hundreds" contribution.
+                
+AtoB_Done       LD  R1, AtoB_Save1
+                LD  R2, AtoB_Save2
+                LD  R3, AtoB_Save3
+                LD  R4, AtoB_Save4
+                LD  R5, AtoB_Save5
+                RET
+
+AtoB_ASCIIBUFF  .FILL ASCIIBUFF
+AtoB_Save1      .BLKW #1
+AtoB_Save2      .BLKW #1
+AtoB_Save3      .BLKW #1
+AtoB_Save4      .BLKW #1
+AtoB_Save5      .BLKW #1
+AtoB_x          .FILL x0078     ;ASCII 'x'
+AtoB_NegASCII0  .FILL x-30
+AtoB_NegASCII9  .FILL x-39
+AtoB_MINUS7     .FILL x-7
+AtoB_HEX_TEN    .FILL x10
+AtoB_HEX_HUND   .FILL x100
+AtoB_HUNDRED    .FILL #100
+```
+---
