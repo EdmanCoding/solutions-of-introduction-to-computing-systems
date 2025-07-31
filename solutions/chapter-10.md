@@ -743,3 +743,86 @@ AtoB_HEX_HUND   .FILL x100
 AtoB_HUNDRED    .FILL #100
 ```
 ---
+6. Solution:
+```assembly
+BinarytoASCII   ST  R0, BtoA_Save0
+                ST  R1, BtoA_Save1
+                ST  R2, BtoA_Save2
+                ST  R3, BtoA_Save3
+                ST  R4, BtoA_Save4
+                AND R2, R2, #0
+                AND R4, R4, #0      ;use as sentinel
+                LD  R1, BtoA_ASCIIBUFF ;R1 keeps track of output string.
+                STR R2, R1, #0      ;clear the buffer
+                STR R2, R1, #1
+                STR R2, R1, #2
+                STR R2, R1, #3
+                ADD R0, R0, #0      ;R0 contains the binary value.
+                BRn NegSign ;
+                ;LD  R2, ASCIIplus   ;First store the ASCII plus sign.
+                ;STR R2, R1, #0
+                BRnzp Begin100
+NegSign         LD  R2, ASCIIminus  ;First store ASCII minus sign.
+                STR R2, R1, #0
+                ADD R1, R1, #1
+                NOT R0, R0          ;Convert the number to absolute
+                ADD R0, R0, #1      ;value; it is easier to work with.
+
+Begin100        LD  R2, ASCIIoffset ;Prepare for "hundreds" digit.
+
+                LD  R3, Neg100      ;Determine the hundreds digit.
+Loop100         ADD R0, R0, R3
+                BRn End100
+                ADD R2, R2, #1
+                BRnzp Loop100
+
+End100          LD  R3, ASCIIoffsetM 
+                ADD R3, R2, R3          ;skip storing if "hundreds" = 0
+                BRz BtoA_SKIP
+                STR R2, R1, #0          ;Store ASCII code for hundreds digit.
+                ADD R1, R1, #1
+                ADD R4, R4, #1          ;set sentinel that handreds were set (not 0)
+BtoA_SKIP       LD  R3, Pos100
+                ADD R0, R0, R3          ;Correct R0 for one-too-many subtracts.
+
+                LD R2, ASCIIoffset  ;Prepare for "tens" digit.
+
+Loop10          ADD R0, R0, #-10    ;Determine the tens digit.
+                BRn End10
+                ADD R2, R2, #1
+                BRnzp Loop10
+
+End10           LD  R3, ASCIIoffsetM 
+                ADD R3, R2, R3      ;skip storing if "tens" = 0
+                BRz BtoA_SKIP2       
+                STR R2, R1, #0      ;Store ASCII code for tens digit.
+                ADD R1, R1, #1
+                BR  BtoA_SKIP2_2
+BtoA_SKIP2      ADD R4, R4, #0
+                BRz BtoA_SKIP2_2    ;don't skip if hundreds weren't 0
+                STR R2, R1, #0      ;Store ASCII code for tens digit.
+                ADD R1, R1, #1
+BtoA_SKIP2_2    ADD R0, R0, #10     ;Correct R0 for one-too-many subtracts.
+Begin1          LD  R2, ASCIIoffset ;Prepare for "ones" digit.
+                ADD R2, R2, R0
+                STR R2, R1, #0
+                LD  R0, BtoA_Save0
+                LD  R1, BtoA_Save1
+                LD  R2, BtoA_Save2
+                LD  R3, BtoA_Save3
+                LD  R4, BtoA_Save4
+                RET
+
+ASCIIplus       .FILL x002B
+ASCIIminus      .FILL x002D
+ASCIIoffset     .FILL x0030
+ASCIIoffsetM    .FILL x-30
+Neg100          .FILL #-100
+Pos100          .FILL #100
+BtoA_Save0      .BLKW #1
+BtoA_Save1      .BLKW #1
+BtoA_Save2      .BLKW #1
+BtoA_Save3      .BLKW #1
+BtoA_Save4      .BLKW #1
+BtoA_ASCIIBUFF  .FILL ASCIIBUFF
+```
