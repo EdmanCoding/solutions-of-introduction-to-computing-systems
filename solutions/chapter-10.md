@@ -828,3 +828,80 @@ BtoA_ASCIIBUFF  .FILL ASCIIBUFF
 ```
 ---
 7. This program reverses the input string. For example, given an input of “Hello”, the output is “olleH”.
+---
+8. Solution:
+```assembly
+    ;The Calculator, Main Algorithm
+        LEA R6, StackBase ; Initialize the Stack Pointer.
+        ADD R6, R6, #1 ; R6 = StackBase + 1--> empty stack
+
+NewCommand  LEA R0, PromptMsg
+            PUTS
+            GETC
+            OUT
+    ;Check the command
+TestX       LD  R1, NegX          ; Check for X.
+            ADD R1, R1, R0
+            BRnp TestC
+            HALT
+
+TestC       LD  R1, NegC          ; Check for C.
+            ADD R1, R1, R0
+            BRnp TestAdd
+            JSR OpClear         ; See Figure 10.20
+            BRnzp NewCommand
+
+TestAdd     LD  R1, NegPlus       ; Check for +
+            ADD R1, R1, R0
+            BRnp TestMult
+            JSR OpAdd           ; See Figure 10.8
+            BRnzp NewCommand
+
+TestMult    LD R1, NegMult       ; Check for *
+            ADD R1, R1, R0
+            BRnp TestMinus
+            JSR OpMult          ; See Figure 10.12
+            BRnzp NewCommand
+
+TestMinus   LD R1, NegMinus      ; Check for -
+            ADD R1, R1, R0
+            BRnp TestD
+            JSR OpNeg           ; See Figure 10.13
+            BRnzp NewCommand
+
+TestD   LD  R1, NegD              ; Check for D
+        ADD R1, R1, R0
+        BRnp TestDigit
+        JSR OpDisplay           ;See Figure 10.19
+        BRnzp NewCommand
+        
+TestDigit   LD  R1, NegASCII0
+            ADD R1, R1, R0
+            BRn NotDigit
+            LD  R1, NegASCII9
+            ADD R1, R1, R0
+            BRp NotDigit
+            BR  EnterNumber
+NotDigit    LD  R0, X
+            BR  TestX
+    ;Then we must be entering an integer
+EnterNumber JSR PushValue       ; See Figure 10.16
+            BRnzp NewCommand
+
+PromptMsg   .FILL x000A
+            .STRINGZ "Enter a command:"
+X           .FILL x0058
+NegX        .FILL xFFA8
+NegC        .FILL xFFBD
+NegPlus     .FILL xFFD5
+NegMinus    .FILL xFFD3
+NegMult     .FILL xFFD6
+NegD        .FILL xFFBC
+NegASCII0   .FILL x-30
+NegASCII9   .FILL x-39
+;Globals
+StackMax    .BLKW #9
+StackBase   .BLKW #1
+ASCIIBUFF   .BLKW #4
+            .FILL x0000 ; ASCIIBUFF sentinel
+```
