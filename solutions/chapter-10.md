@@ -826,3 +826,5 @@ BtoA_Save3      .BLKW #1
 BtoA_Save4      .BLKW #1
 BtoA_ASCIIBUFF  .FILL ASCIIBUFF
 ```
+---
+7. This program reverses the input string. For example, given an input of “Hello”, the output is “olleH”.
